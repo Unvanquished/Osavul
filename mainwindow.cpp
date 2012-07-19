@@ -32,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     chat = new IrcClient(this);
     chat->setObjectName("ircChat");
 
+    msv = new MasterServer();
+    msv->setParent(this);
+    msv->setObjectName("masterServer");
+
     // and this is where connectSlotsByName happens
     ui->setupUi(this);
 
@@ -67,14 +71,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->humanTable->setItemDelegateForColumn(2, playerTableDelegate);
 
     QThread *unvThread = new QThread(this);
+    msv->setParent(nullptr);
     connect(qApp, SIGNAL(aboutToQuit()),
             unvThread, SLOT(quit()));
-    connect(&msv, SIGNAL(unvQueried(unv::GameServer *)),
-            this, SLOT(handle_unvanquished_queried(unv::GameServer *)));
     connect(unvThread, SIGNAL(started()),
-            &msv, SLOT(query()));
+            msv, SLOT(query()));
 
-    msv.moveToThread(unvThread);
+    msv->moveToThread(unvThread);
     unvThread->start();
 
     QThread *ircThread = new QThread(this);
@@ -141,7 +144,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (!trayIcon->isVisible())
         return;
 
-    bool doShow = settings.value("ui/showTrayNotice").toBool();
+    bool doShow = settings.value("ui/showTrayNotice", true).toBool();
 
     if (doShow) {
         QMessageBox mb(QMessageBox::Information,
@@ -195,7 +198,7 @@ void MainWindow::on_ircConnectButton_clicked()
     }
 }
 
-void MainWindow::handle_unvanquished_queried(unv::GameServer *sv)
+void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
 {
     using namespace unv;
     static const QString templ = tr("%1 servers queried");
@@ -218,7 +221,7 @@ void MainWindow::handle_unvanquished_queried(unv::GameServer *sv)
     items.at(0)->setText(sv->game());
     items.at(1)->setText(sv->name());
     items.at(2)->setText(sv->map());
-    items.at(3)->setText(QString::number(sv->ping()));
+    items.at(3)->setData(Qt::EditRole, sv->ping());
     items.at(4)->setText(sv->formattedClientCount());
 
     if (isNew) {
@@ -294,7 +297,7 @@ void MainWindow::on_refreshButton_clicked()
     ui->serverTable->setRowCount(0);
 
     ui->refreshButton->setEnabled(false);
-    msv.query();
+    msv->query();
 
     // I am _really_ looking forward to C++11 lambda support in Qt; this is an ugly tmp workaround
     QTimer::singleShot(2000, this, SLOT(enableRefreshButton()));
@@ -324,7 +327,6 @@ void MainWindow::on_joinButton_clicked()
 
 void MainWindow::connectTo(const QString &host)
 {
-//    QProcess *proc = new QProcess(this);
     QString path = settings.value("unv/clientExecutablePath", "unvanquished").toString();
 
     ui->statusBar->showMessage(tr("Launching Unvanquished..."), 3000);
@@ -404,7 +406,7 @@ void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
     if ((currentLength == 1 && previousLength == 0) // entering first letter
         || (currentLength < previousLength)) { // initial collection or generalization
         ui->playerTreeWidget->clear();
-        for (const GameServer *sv : msv.servers()) {
+        for (const GameServer *sv : msv->servers()) {
 
             if (sv->players().isEmpty())
                 continue;
@@ -530,14 +532,6 @@ void MainWindow::on_ircTabWidget_tabCloseRequested(int index)
 {
     if (index == 0 && chat->isConnected()) {
         ui->ircConnectButton->click();
-        return;
-    }
-
-    if (index == 0) {
-        QMessageBox::information(this,
-                                 "...",
-                                 "Excuse me wtf are you doing",
-                                 QMessageBox::Ok);
         return;
     }
 

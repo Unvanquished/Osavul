@@ -108,6 +108,8 @@ void Server::receiveData()
 
 void Server::query()
 {
+    sock.write(m_queryMessage);
+
     m_ping = 0;
     pingTimer.start();
 }
@@ -219,5 +221,5 @@ void MasterServer::onGameSvReady() {
     GameServer *sv = qobject_cast<GameServer *> (sender());
     if (!sv) { Q_ASSERT(false); }
 
-    emit unvQueried(sv);
+    emit serverQueried(sv);
 }

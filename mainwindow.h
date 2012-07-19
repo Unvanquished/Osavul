@@ -82,18 +82,16 @@ private slots:
     void on_actionAbout_Osavul_triggered();
     void on_actionAbout_Qt_triggered();
     void connectTo(const QString &host);
-
     void on_actionPreferences_triggered();
 
 public slots:
     void on_ircChat_serverCommMessage(const QString &s);
-    void handle_unvanquished_queried(unv::GameServer *svNew);
+    void on_masterServer_serverQueried(unv::GameServer *svNew);
 
 private:
     void updateTeamTables(const QList<unv::Player> &playerList);
 
 signals:
-    void startIrcThread();
     void ircChangeNick(const QString &nick);
     void ircOpenQuery(const QString &user);
 
@@ -102,15 +100,13 @@ private:
     QSettings settings;
 
     Ui::MainWindow *ui;
-//    QThread *unvThread;
-//    QThread *ircThread;
     QProcess *gameProc;
     QHash<unv::GameServer *, QTableWidgetItem *> gameServersShown;
 
     QMenu *trayIconMenu;
     QSystemTrayIcon *trayIcon;
 
-    unv::MasterServer msv;
+    unv::MasterServer *msv;
     IrcClient *chat;
 };
 

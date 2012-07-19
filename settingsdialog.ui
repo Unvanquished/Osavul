@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>185</width>
-    <height>58</height>
+    <width>219</width>
+    <height>86</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,23 @@
       <string>Connect to IRC on startup</string>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="daemonPathLayout">
+     <item>
+      <widget class="QLabel" name="daemonPathLabel">
+       <property name="text">
+        <string>&amp;Path to Daemon:</string>
+       </property>
+       <property name="buddy">
+        <cstring>daemonPathLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="daemonPathLineEdit"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

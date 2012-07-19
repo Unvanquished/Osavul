@@ -7,6 +7,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->ircConnectOnStartupCheckBox->setChecked(settings.value("ircConnectOnStartup").toBool());
+    ui->daemonPathLineEdit->setText(settings.value("unv/clientExecutablePath").toString());
 }
 
 SettingsDialog::~SettingsDialog()
@@ -16,5 +17,6 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::on_buttonBox_accepted()
 {
-    settings.setValue("ircConnectOnStartup", ui->ircConnectOnStartupCheckBox->isChecked());
+    settings.setValue("irc/connectOnStartup", ui->ircConnectOnStartupCheckBox->isChecked());
+    settings.setValue("unv/clientExecutablePath", ui->daemonPathLineEdit->text());
 }

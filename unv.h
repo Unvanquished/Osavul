@@ -148,7 +148,7 @@ namespace unv {
         void processOOB(QList<QByteArray> st);
 
     signals:
-        void unvQueried(unv::GameServer *sv);
+        void serverQueried(unv::GameServer *sv);
 
     public slots:
         void onGameSvReady();
