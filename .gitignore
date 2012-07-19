@@ -10,3 +10,6 @@
 *.lai
 *.la
 *.a
+
+# User-specific project files
+*.user
