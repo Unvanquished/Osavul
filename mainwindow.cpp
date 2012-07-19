@@ -285,7 +285,6 @@ void MainWindow::on_ircChat_serverCommMessage(const QString &s)
     static const QString templ = "[HH:mm:ss] ";
     QTime time = QTime::currentTime();
 
-    ui->ircDisplayArea->setTextColor(Qt::white);
     ui->ircDisplayArea->append(time.toString(templ) + s);
 }
 
@@ -330,7 +329,6 @@ void MainWindow::connectTo(const QString &host)
 
     ui->statusBar->showMessage(tr("Launching Unvanquished..."), 3000);
 
-    qDebug() << path << "+connect" << host;
     QProcess::startDetached(path, { "+connect", host });
 }
 

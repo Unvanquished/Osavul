@@ -108,9 +108,6 @@ void Server::receiveData()
 
 void Server::query()
 {
-    if (sock.write(m_queryMessage) == -1)
-        qDebug() << sock.error() << sock.errorString() << '!';
-
     m_ping = 0;
     pingTimer.start();
 }

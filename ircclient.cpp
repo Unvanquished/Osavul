@@ -64,7 +64,6 @@ void IrcClient::init(const QString &nickName)
 void IrcClient::send(const QString &data)
 {
     sock.write(QString(data % "\r\n").toUtf8());
-    qDebug() << "<<" << data;
 }
 
 void IrcClient::say(Channel *channel, const QString &data)
@@ -187,8 +186,6 @@ void IrcClient::receive()
 
         // no CRLF, please
         QByteArray in = rawLine.left(rawLine.length() - 2);
-
-        qDebug() << in;
 
         // no prefix ':' either
         if (in.startsWith(':'))
