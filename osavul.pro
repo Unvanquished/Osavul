@@ -32,7 +32,7 @@ FORMS += mainwindow.ui \
     settingsdialog.ui \
     channel.ui
 
-TRANSLATIONS = osavul_ua.ts
+TRANSLATIONS = osavul_ua.ts osavul_en_GB.ts
 
 QMAKE_CXXFLAGS += -std=c++0x -Wall
 
