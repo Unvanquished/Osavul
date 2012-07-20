@@ -331,7 +331,8 @@ void MainWindow::connectTo(const QString &host)
 
     ui->statusBar->showMessage(tr("Launching Unvanquished..."), 3000);
 
-    QProcess::startDetached(path, { "+connect", host });
+    if (!QProcess::startDetached(path, { "+connect", host }))
+        ui->statusBar->showMessage(tr("Daemon failed to start!"), 3000);
 }
 
 void MainWindow::on_syncButton_clicked()
