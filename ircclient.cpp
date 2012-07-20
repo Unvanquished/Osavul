@@ -85,11 +85,6 @@ void IrcClient::join(Channel *channel)
     channels.insert(name, channel);
 }
 
-void IrcClient::join(const QString &channel)
-{
-    send("JOIN " % channel);
-}
-
 void IrcClient::part(Channel *channel)
 {
     const QString &name = channel->channel();
@@ -99,11 +94,6 @@ void IrcClient::part(Channel *channel)
 
     send("PART " % name % " :Osavul parted");
     channels.remove(name);
-}
-
-void IrcClient::part(const QString &channel)
-{
-    send("PART " % channel);
 }
 
 QString htmlized(const QString& message)

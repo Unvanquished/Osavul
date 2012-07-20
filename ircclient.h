@@ -98,9 +98,7 @@ public slots:
     }
 
     void join(Channel *channel);
-    void join(const QString &channel);
     void part(Channel *channel);
-    void part(const QString &channel);
     void send(const QString &data);
 
 private slots:
