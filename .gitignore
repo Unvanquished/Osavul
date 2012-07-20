@@ -2,6 +2,7 @@
 *.slo
 *.lo
 *.o
+osavul
 
 # Compiled Dynamic libraries
 *.so
@@ -13,3 +14,22 @@
 
 # User-specific project files
 *.user
+
+# Other generated files
+Makefile
+moc_channel.cpp
+moc_connectiondialog.cpp
+moc_ircclient.cpp
+moc_mainwindow.cpp
+moc_settingsdialog.cpp
+moc_unv.cpp
+qrc_osavul.cpp
+ui_channel.h
+ui_connectiondialog.h
+ui_mainwindow.h
+ui_settingsdialog.h
+
+# Backup etc.
+*~
+*.orig
+*.rej
