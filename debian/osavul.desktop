@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=Osavul
+Comment=Server browser for Unvanquished
+Terminal=false
+Type=Application
+Categories=Network;
+Exec=/usr/bin/osavul

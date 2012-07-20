@@ -1,0 +1,2 @@
+?package(osavul):needs="X11|wm" section="Applications/Network"\
+  title="osavul" command="/usr/bin/osavul"

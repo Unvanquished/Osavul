@@ -1,0 +1,15 @@
+Source: osavul
+Section: games
+Priority: extra
+Maintainer: Darren Salt <devspam@moreofthesa.me.uk>
+Build-Depends: debhelper (>= 8.0.0), libqt4-dev
+Standards-Version: 3.9.2
+
+Package: osavul
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: unvanquished
+Description: Unvanquished server browser
+ Osavul is a server browser for Unvanquished.
+ It also contains a simple IRC client.
+
