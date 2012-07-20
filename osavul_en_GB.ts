@@ -55,22 +55,22 @@
 <context>
     <name>IrcClient</name>
     <message>
-        <location filename="ircclient.cpp" line="222"/>
+        <location filename="ircclient.cpp" line="212"/>
         <source>%1 has joined %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ircclient.cpp" line="224"/>
+        <location filename="ircclient.cpp" line="214"/>
         <source>%1 has left %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ircclient.cpp" line="226"/>
+        <location filename="ircclient.cpp" line="216"/>
         <source>%1 is now known as %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ircclient.cpp" line="228"/>
+        <location filename="ircclient.cpp" line="218"/>
         <source>%1 has quit [%2]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -250,7 +250,7 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="702"/>
-        <location filename="mainwindow.cpp" line="570"/>
+        <location filename="mainwindow.cpp" line="571"/>
         <source>About Osavul</source>
         <translation type="unfinished"></translation>
     </message>
@@ -300,42 +300,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="397"/>
+        <location filename="mainwindow.cpp" line="335"/>
+        <source>Daemon failed to start!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="398"/>
         <source>Found %1 players on %2 servers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="471"/>
+        <location filename="mainwindow.cpp" line="472"/>
         <source>Join Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="472"/>
+        <location filename="mainwindow.cpp" line="473"/>
         <source>Channel:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="495"/>
+        <location filename="mainwindow.cpp" line="496"/>
         <source>Change Nickname</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="496"/>
+        <location filename="mainwindow.cpp" line="497"/>
         <source>New Nickname:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="511"/>
+        <location filename="mainwindow.cpp" line="512"/>
         <source>Query User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="512"/>
+        <location filename="mainwindow.cpp" line="513"/>
         <source>Username:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="571"/>
+        <location filename="mainwindow.cpp" line="572"/>
         <source>&lt;h3&gt;About Osavul&lt;/h3&gt;&lt;p&gt;Osavul is a server browser application meant specifically for querying Unvanquished servers.&lt;/p&gt;&lt;p&gt;Osavul uses C++ with Qt, a cross-platform widget toolkit. You can read more about it in the &quot;About Qt&quot; dialog by choosing the respective option in the &quot;Help&quot; menu.&lt;/p&gt;&lt;p&gt;Osavul is licensed under the GNU General Public License version 3.&lt;/p&gt;&lt;p&gt;(C) Qrntz 2012&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
