@@ -3,7 +3,7 @@ Upstream-Name: osavul
 Source: <url://example.com>
 
 Files: *
-Copyright: 2012 Qrntz <wrntz@lavabit.org>
+Copyright: 2012 Qrntz <qrntz@lavabit.org>
 License: GPL-3+
 
 Files: debian/*
