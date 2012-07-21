@@ -94,7 +94,7 @@ namespace unv {
 
     public:
         GameServer(const QString &host, quint16 port)
-            : Server(host, port, "\xff\xff\xff\xffgetstatus") { }
+            : Server(host, port, "\xff\xff\xff\xffgetstatus"), info(0) { }
         ~GameServer() { }
 
         QString game() const { return info.game; }
@@ -122,8 +122,6 @@ namespace unv {
         } info;
 
         QList<Player> m_players;
-        bool completeInfo;
-        bool completeStatus;
 
         void processOOB(QList<QByteArray> st);
 
