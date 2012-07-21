@@ -18,6 +18,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#ifdef __unix__
+#include <unistd.h>
+#include <fcntl.h>
+#endif
+
 using namespace unv;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -330,6 +335,12 @@ void MainWindow::connectTo(const QString &host)
     QString path = settings.value("unv/clientExecutablePath", "unvanquished").toString();
 
     ui->statusBar->showMessage(tr("Launching Unvanquished..."), 3000);
+
+#ifdef __unix__
+    fcntl(STDIN_FILENO,  F_SETFD, FD_CLOEXEC, 1);
+    fcntl(STDOUT_FILENO, F_SETFD, FD_CLOEXEC, 1);
+    fcntl(STDERR_FILENO, F_SETFD, FD_CLOEXEC, 1);
+#endif
 
     if (!QProcess::startDetached(path, { "+connect", host }))
         ui->statusBar->showMessage(tr("Daemon failed to start!"), 3000);
