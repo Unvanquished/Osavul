@@ -99,6 +99,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->serverTable->addAction(ui->actionAdd_to_Favorites);
 
+    // restore favorites
     int size = settings.beginReadArray("favorites");
 
     QSignalMapper *mapper = new QSignalMapper(this);
@@ -118,15 +119,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         mapper->setMapping(action, QString("%1:%2").arg(fav.host).arg(fav.port));
     }
 
+    settings.endArray();
     connect(mapper, SIGNAL(mapped(QString)), this, SLOT(connectTo(QString)));
 
-    settings.endArray();
+    // restore window geometry
+    settings.beginGroup("mainWindow");
+    this->resize(settings.value("size", this->size()).toSize());
+    this->move(settings.value("pos", this->pos()).toPoint());
+    settings.endGroup();
 
     qsrand(static_cast<uint>(QTime::currentTime().msec()));
 }
 
 MainWindow::~MainWindow()
 {
+    // save window geometry
+    settings.beginGroup("mainWindow");
+    settings.setValue("size", this->size());
+    settings.setValue("pos", this->pos());
+    settings.endGroup();
+
+    // save favorites
     settings.beginWriteArray("favorites");
 
     for (int i = 0; i < favorites.length(); ++i) {
