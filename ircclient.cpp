@@ -17,6 +17,8 @@
 
 #include "ircclient.h"
 
+#define IMPORTANT_MARKER "<span style='color: red'> ! </span>"
+
 namespace IrcUtil {
     QString clean(const QString &user)
     {
@@ -34,6 +36,60 @@ namespace IrcUtil {
 
         return templ.arg(peerColors.value(peer).name(), clean(peer));
     }
+
+    QString htmlized(const QString &message)
+    {
+        QString out = Qt::escape(message);
+
+        enum {
+            Zero      = 0x00,
+            Bold      = 0x01,
+            Color     = 0x02,
+            Italic    = 0x04,
+            Underline = 0x08
+        };
+
+        int parsingState = 0;
+        const char * const end = "</span>";
+        QByteArray tmp;
+
+        for (int i = 0; i < out.length(); ++i) {
+            QChar c = out.at(i);
+            if (c.isPrint())
+                continue;
+
+            switch (c.unicode()) {
+                case '\x02': // bold
+                case '\x16': // inverse
+                    tmp = (parsingState & Bold) ? end : "<span style='font-weight: bold'>";
+                    parsingState ^= Bold;
+                    break;
+                case '\x03': // color
+                    tmp = (parsingState & Color) ? end : "<span style='color: %1'>";
+                    parsingState ^= Color;
+                    break;
+                case '\x1d': // italic
+                    tmp = (parsingState & Italic) ? end : "<span style='font-style: italic'>";
+                    parsingState ^= Italic;
+                    break;
+                case '\x15': // underline
+                case '\x1f': // ditto
+                    tmp = (parsingState & Underline) ? end : "<span style='text-decoration: underline'>";
+                    parsingState ^= Underline;
+                    break;
+                case '\x0f':
+                    parsingState = Zero;
+                    break;
+                default:
+                    break;
+            }
+
+            out.replace(i, 1, tmp);
+            i += tmp.size();
+        }
+
+        return out;
+    }
 }
 
 IrcClient::IrcClient(QObject *parent) : QObject(parent)
@@ -44,10 +100,14 @@ IrcClient::IrcClient(QObject *parent) : QObject(parent)
 
 void IrcClient::connectToHost(const QString &host, quint16 port)
 {
+    serverCommMessage(IMPORTANT_MARKER "Connecting...");
     sock.connectToHost(host, port);
 
-    if (!sock.waitForConnected())
-        return;
+    if (!sock.waitForConnected()) {
+        serverCommMessage(IMPORTANT_MARKER "Connection failed!");
+        sock.disconnectFromHost();
+        sock.close();
+    }
 }
 
 IrcClient::~IrcClient()
@@ -81,7 +141,9 @@ void IrcClient::join(Channel *channel)
     if (channels.contains(name))
         return;
 
-    send("JOIN " % name);
+    if (name.startsWith('#'))
+        send("JOIN " % name);
+
     channels.insert(name, channel);
 }
 
@@ -92,62 +154,10 @@ void IrcClient::part(Channel *channel)
     if (!channels.contains(name))
         return;
 
-    send("PART " % name % " :Osavul parted");
+    if (name.startsWith('#'))
+        send("PART " % name % " :Osavul parted");
+
     channels.remove(name);
-}
-
-QString htmlized(const QString& message)
-{
-    QString out = Qt::escape(message);
-
-    enum {
-        Zero      = 0x00,
-        Bold      = 0x01,
-        Color     = 0x02,
-        Italic    = 0x04,
-        Underline = 0x08
-    };
-
-    int parsingState = 0;
-    const char * const end = "</span>";
-    QByteArray tmp;
-
-    for (int i = 0; i < out.length(); ++i) {
-        QChar c = out.at(i);
-        if (c.isPrint())
-            continue;
-
-        switch (c.unicode()) {
-            case '\x02': // bold
-            case '\x16': // inverse
-                tmp = (parsingState & Bold) ? end : "<span style='font-weight: bold'>";
-                parsingState ^= Bold;
-                break;
-            case '\x03': // color
-                tmp = (parsingState & Color) ? end : "<span style='color: %1'>";
-                parsingState ^= Color;
-                break;
-            case '\x1d': // italic
-                tmp = (parsingState & Italic) ? end : "<span style='font-style: italic'>";
-                parsingState ^= Italic;
-                break;
-            case '\x15': // underline
-            case '\x1f': // ditto
-                tmp = (parsingState & Underline) ? end : "<span style='text-decoration: underline'>";
-                parsingState ^= Underline;
-                break;
-            case '\x0f':
-                parsingState = Zero;
-                break;
-            default:
-                break;
-        }
-
-        out.replace(i, 1, tmp);
-        i += tmp.size();
-    }
-
-    return out;
 }
 
 void IrcClient::receive()
@@ -203,7 +213,7 @@ void IrcClient::receive()
                 chan->addUser(user);
         }
 
-        if (!channels.contains(target)) {
+        if (!channels.contains(target) && target != m_nickName) {
             serverCommMessage(in);
             continue;
         }
@@ -218,7 +228,8 @@ void IrcClient::receive()
             out = tr("%1 has quit [%2]");
 
         if (!out.isEmpty()) {
-            addStringToChannel(channels.value(target), out.arg(IrcUtil::coloredName(peer), target));
+            addStringToChannel(channels.value(target),
+                               out.arg(IrcUtil::coloredName(peer), target));
             continue;
         }
 
@@ -227,15 +238,18 @@ void IrcClient::receive()
         else if (cmd == "NOTICE")
             out = "(NOTICE from %1) %2";
 
-        if (!out.isEmpty())
-            addStringToChannel(channels.value(target), out.arg(IrcUtil::coloredName(peer), what));
-        else
+        if (!out.isEmpty()) {
+            qDebug() << m_nickName << IrcUtil::clean(peer) << target;
+            addStringToChannel(channels.value(target == m_nickName ? IrcUtil::clean(peer) : target),
+                               out.arg(IrcUtil::coloredName(peer), what));
+        } else
             serverCommMessage(in);
     }
 }
 
 void IrcClient::die() {
     send("QUIT :Osavul closed");
+    serverCommMessage(IMPORTANT_MARKER "Disconnected.");
     sock.disconnectFromHost();
     sock.close();
 }

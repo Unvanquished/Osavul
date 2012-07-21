@@ -33,6 +33,7 @@
 namespace IrcUtil {
     QString clean(const QString &user);
     QString coloredName(const QString &peer);
+    QString htmlized(const QString &message);
 }
 
 class IrcClient : public QObject

@@ -306,9 +306,8 @@ void MainWindow::updateTeamTables(const QList<Player> &playerList)
 void MainWindow::on_ircChat_serverCommMessage(const QString &s)
 {
     static const QString templ = "[HH:mm:ss] ";
-    QTime time = QTime::currentTime();
 
-    ui->ircDisplayArea->append(time.toString(templ) + s);
+    ui->ircDisplayArea->append(QTime::currentTime().toString(templ) + s);
 }
 
 void MainWindow::on_refreshButton_clicked()
@@ -553,6 +552,7 @@ void MainWindow::on_ircQueryButton_clicked()
             chat, SLOT(say(Channel*,QString)));
     ui->ircTabWidget->addTab(userTab, user);
     ui->ircTabWidget->setCurrentWidget(userTab);
+    userTab->addUser(user);
 }
 
 void MainWindow::on_ircTabWidget_tabCloseRequested(int index)
