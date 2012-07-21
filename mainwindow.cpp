@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     trayIcon->show();
 
     // loading the UI settings
-    bool optionState = settings.value("ui/showSpectatorList").toBool();
+    bool optionState = settings.value("mainWindow/showSpectatorList").toBool();
     ui->spectatorWidget->setVisible(optionState);
     ui->showSpectatorsButton->setChecked(optionState);
 
@@ -164,7 +164,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (!trayIcon->isVisible())
         return;
 
-    bool doShow = settings.value("ui/showTrayNotice", true).toBool();
+    bool doShow = settings.value("mainwindow/showTrayNotice", true).toBool();
 
     if (doShow) {
         QMessageBox mb(QMessageBox::Information,
@@ -179,7 +179,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         mb.exec();
 
         if (mb.clickedButton() == pb)
-            settings.setValue("ui/showTrayNotice", false);
+            settings.setValue("mainwindow/showTrayNotice", false);
     }
 
     this->hide();
@@ -416,7 +416,7 @@ void MainWindow::on_trayIcon_activated(QSystemTrayIcon::ActivationReason reason)
 void MainWindow::on_showSpectatorsButton_clicked(bool checked)
 {
     // this is not the sole action — another connection is made directly in the .ui file.
-    settings.setValue("ui/showSpectatorList", checked);
+    settings.setValue("mainWindow/showSpectatorList", checked);
 }
 
 void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
