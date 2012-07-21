@@ -23,6 +23,8 @@
 #include <fcntl.h>
 #endif
 
+#define TIMEOUT 3000
+
 using namespace unv;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -248,7 +250,7 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
     ui->serverTable->horizontalHeader()->setStretchLastSection(true);
 
     if (!ui->refreshButton->isEnabled())
-        ui->statusBar->showMessage(templ.arg(ui->serverTable->rowCount()), 3000);
+        ui->statusBar->showMessage(templ.arg(ui->serverTable->rowCount()), TIMEOUT);
 }
 
 void MainWindow::updateTeamTables(const QList<Player> &playerList)
@@ -321,7 +323,7 @@ void MainWindow::enableSyncButton()
 void MainWindow::on_joinButton_clicked()
 {
     if (!ui->serverTable->currentItem()) {
-        ui->statusBar->showMessage(tr("No server selected!"), 3000);
+        ui->statusBar->showMessage(tr("No server selected!"), TIMEOUT);
         return;
     }
 
@@ -334,7 +336,7 @@ void MainWindow::connectTo(const QString &host)
 {
     QString path = settings.value("unv/clientExecutablePath", "unvanquished").toString();
 
-    ui->statusBar->showMessage(tr("Launching Unvanquished..."), 3000);
+    ui->statusBar->showMessage(tr("Launching Unvanquished..."), TIMEOUT);
 
 #ifdef __unix__
     fcntl(STDIN_FILENO,  F_SETFD, FD_CLOEXEC, 1);
@@ -343,13 +345,13 @@ void MainWindow::connectTo(const QString &host)
 #endif
 
     if (!QProcess::startDetached(path, { "+connect", host }))
-        ui->statusBar->showMessage(tr("Daemon failed to start!"), 3000);
+        ui->statusBar->showMessage(tr("Daemon failed to start!"), TIMEOUT);
 }
 
 void MainWindow::on_syncButton_clicked()
 {
     if (!ui->serverTable->currentItem()) {
-        ui->statusBar->showMessage("No server selected!", 3000);
+        ui->statusBar->showMessage("No server selected!", TIMEOUT);
         return;
     }
 
@@ -463,7 +465,7 @@ void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
     ui->statusBar->showMessage(templ
                                .arg(playersFound)
                                .arg(ui->playerTreeWidget->topLevelItemCount()),
-                               3000);
+                               TIMEOUT);
 
     previousLength = currentLength;
 }
