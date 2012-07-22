@@ -100,7 +100,6 @@ private:
     QSettings settings;
 
     Ui::MainWindow *ui;
-    QProcess *gameProc;
     QHash<unv::GameServer *, QTableWidgetItem *> gameServersShown;
 
     QMenu *trayIconMenu;

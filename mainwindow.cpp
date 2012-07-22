@@ -314,6 +314,7 @@ void MainWindow::on_refreshButton_clicked()
 {
     ui->serverTable->clearContents();
     ui->serverTable->setRowCount(0);
+    gameServersShown.clear();
 
     ui->refreshButton->setEnabled(false);
     msv->query();

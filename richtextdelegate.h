@@ -31,6 +31,7 @@ public:
     void setAlignment(Qt::Alignment alignment = Qt::AlignCenter) { m_alignment = alignment; }
 
 protected:
+    ~RichTextDelegate();
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 

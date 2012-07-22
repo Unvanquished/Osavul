@@ -185,7 +185,7 @@ void IrcClient::receive()
         }
 
         // no CRLF, please
-        QByteArray in = rawLine.left(rawLine.length() - 2);
+        QString in = QString::fromUtf8(rawLine.left(rawLine.length() - 2));
 
         // no prefix ':' either
         if (in.startsWith(':'))
@@ -193,16 +193,16 @@ void IrcClient::receive()
 
         int last = in.indexOf(" :");
 
-        QList<QByteArray> params =
+        QStringList params =
                 last < 0 ? in.split(' ') : in.mid(0, last).split(' ') << in.mid(last + 2);
 
         if (params.length() < 3)
             continue;
 
-        QString peer   = QString::fromUtf8(params.takeFirst());
-        QString cmd    = QString::fromUtf8(params.takeFirst());
-        QString target = QString::fromUtf8(params.takeFirst());
-        QString what   = QString::fromUtf8(params.isEmpty() ? "" : params.takeFirst());
+        QString peer   = params.takeFirst();
+        QString cmd    = params.takeFirst();
+        QString target = params.takeFirst();
+        QString what   = params.isEmpty() ? "" : params.takeFirst();
 
         QString out;
 

@@ -24,6 +24,10 @@ RichTextDelegate::RichTextDelegate(QObject *parent) :
     l->setAttribute(Qt::WA_TranslucentBackground);
 }
 
+RichTextDelegate::~RichTextDelegate() {
+    delete l;
+}
+
 void RichTextDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                              const QModelIndex &index) const {
     QStyleOptionViewItemV4 options = option;
