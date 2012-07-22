@@ -164,7 +164,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (!trayIcon->isVisible())
         return;
 
-    bool doShow = settings.value("mainwindow/showTrayNotice", true).toBool();
+    bool doShow = settings.value("mainWindow/showTrayNotice", true).toBool();
 
     if (doShow) {
         QMessageBox mb(QMessageBox::Information,
@@ -179,7 +179,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         mb.exec();
 
         if (mb.clickedButton() == pb)
-            settings.setValue("mainwindow/showTrayNotice", false);
+            settings.setValue("mainWindow/showTrayNotice", false);
     }
 
     this->hide();
