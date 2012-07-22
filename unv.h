@@ -94,7 +94,7 @@ namespace unv {
 
     public:
         GameServer(const QString &host, quint16 port)
-            : Server(host, port, "\xff\xff\xff\xffgetstatus"), info(0) { }
+            : Server(host, port, "\xff\xff\xff\xffgetstatus"), info() { }
         ~GameServer() { }
 
         QString game() const { return info.game; }
