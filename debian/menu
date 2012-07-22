@@ -1,2 +1,6 @@
-?package(osavul):needs="X11|wm" section="Applications/Network"\
-  title="osavul" command="/usr/bin/osavul"
+?package(osavul): \
+	needs="X11" \
+	section="Apps/Net" \
+	title="Osavul" \
+	command="/usr/bin/osavul" \
+	icon="/usr/share/icons/hicolor/128x128/apps/unvanquished.png"

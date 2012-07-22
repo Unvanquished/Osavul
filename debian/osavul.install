@@ -1,2 +1,3 @@
 osavul			usr/bin
 osavul_*.qm		usr/share/qt4/translations
+debian/osavul.desktop	usr/share/applications
