@@ -7,8 +7,7 @@ Standards-Version: 3.9.2
 
 Package: osavul
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: unvanquished
+Depends: ${shlibs:Depends}, ${misc:Depends}, unvanquished
 Description: Unvanquished server browser
  Osavul is a server browser for Unvanquished.
  It also contains a simple IRC client.
