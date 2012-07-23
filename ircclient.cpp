@@ -209,7 +209,7 @@ void IrcClient::receive()
         if (cmd == "353") {
             Channel *chan = channels.value(params.takeFirst());
 
-            for (const QByteArray &user : params.takeFirst().split(' '))
+            for (const QString &user : params.takeFirst().split(' '))
                 chan->addUser(user);
         }
 
