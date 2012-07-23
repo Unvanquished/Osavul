@@ -571,6 +571,11 @@ void MainWindow::on_ircTabWidget_tabCloseRequested(int index)
 
 void MainWindow::on_actionAdd_to_Favorites_triggered()
 {
+    if (!ui->serverTable->currentItem()) {
+        ui->statusBar->showMessage(tr("No server selected!"), TIMEOUT);
+        return;
+    }
+
     auto sv = ui->serverTable->currentItem()->data(Qt::UserRole).value<unv::GameServer *>();
 
     unv::FavoriteEntry f;

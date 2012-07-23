@@ -79,7 +79,8 @@ void colorize(QString &s)
         s.append("</span>");
 }
 
-Server::Server(const QString &host, quint16 port, const QByteArray &queryMessage = "") : m_queryMessage(queryMessage)
+Server::Server(const QString &host, quint16 port, const QByteArray &queryMessage = "")
+    : m_queryMessage(queryMessage)
 {
     connect(&sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
     sock.connectToHost(host, port);
@@ -202,6 +203,7 @@ void MasterServer::processOOB(QList<QByteArray> st) {
     oob.removeLast();
 
     gameServers.clear();
+
     for (auto s : oob) {
         quint32 ip = 0;
 
