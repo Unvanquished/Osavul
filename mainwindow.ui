@@ -434,10 +434,10 @@
               </layout>
              </widget>
             </item>
-            <item alignment="Qt::AlignHCenter">
+            <item>
              <widget class="QPushButton" name="showSpectatorsButton">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
