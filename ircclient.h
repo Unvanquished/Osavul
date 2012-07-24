@@ -74,9 +74,10 @@ private slots:
     void receive();
 
 signals:
-    void serverCommMessage(const QString &x);
+    void serverCommMessage(const QString &);
     void nickNameChanged(const QString &);
-    void addStringToChannel(Channel *channel, const QString &string);
+    void addStringToChannel(Channel *, const QString &);
+    void highlight(Channel *);
 };
 
 #endif // IRCCLIENT_H

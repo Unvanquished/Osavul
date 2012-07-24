@@ -155,8 +155,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_ircChat_addStringToChannel(Channel *channel, const QString &string) {
+void MainWindow::on_ircChat_addStringToChannel(Channel *channel, const QString &string)
+{
     channel->addString(string);
+}
+
+void MainWindow::on_ircChat_highlight(Channel *channel)
+{
+    int i = ui->ircTabWidget->indexOf(channel);
+    QString tabText = ui->ircTabWidget->tabText(i);
+    channel->setProperty("previousText", tabText);
+    channel->setProperty("highlighted", true);
+    ui->ircTabWidget->setTabText(i, "(!) " + tabText);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -511,6 +521,8 @@ void MainWindow::on_ircJoinButton_clicked()
             chat, SLOT(part(Channel*)));
     connect(newTab, SIGNAL(ircSay(Channel*,QString)),
             chat, SLOT(say(Channel*,QString)));
+    connect(newTab, SIGNAL(ircSendRaw(QString)),
+            chat, SLOT(send(QString)));
     ui->ircTabWidget->addTab(newTab, chan);
     ui->ircTabWidget->setCurrentWidget(newTab);
 }
@@ -620,4 +632,16 @@ void MainWindow::on_actionPreferences_triggered()
 {
     SettingsDialog dlg(this);
     dlg.exec();
+}
+
+void MainWindow::on_ircTabWidget_currentChanged(QWidget *arg1)
+{
+    if (!arg1)
+        return;
+
+    if (arg1->property("highlighted").toBool())
+        if (arg1->property("previousText").isValid())
+            ui->ircTabWidget->setTabText(ui->ircTabWidget->indexOf(arg1),
+                                         arg1->property("previousText").toString());
+    arg1->setProperty("highlighted", false);
 }

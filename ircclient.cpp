@@ -239,9 +239,15 @@ void IrcClient::receive()
             out = "(NOTICE from %1) %2";
 
         if (!out.isEmpty()) {
-            qDebug() << m_nickName << IrcUtil::clean(peer) << target;
-            addStringToChannel(channels.value(target == m_nickName ? IrcUtil::clean(peer) : target),
-                               out.arg(IrcUtil::coloredName(peer), what));
+            Channel *chan = channels.value(target == m_nickName ? IrcUtil::clean(peer) : target);
+            QString s = out.arg(IrcUtil::coloredName(peer), what);
+
+            if (what.contains(m_nickName) || target == m_nickName) {
+                highlight(chan);
+                addStringToChannel(chan, "<span style='color: red'>" % s % "</span>");
+            } else {
+                addStringToChannel(chan, s);
+            }
         } else
             serverCommMessage(in);
     }

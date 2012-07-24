@@ -28,7 +28,7 @@ Channel::Channel(QWidget *parent, const QString &channel) :
 
 Channel::~Channel()
 {
-    emit ircPart(this);
+    ircPart(this);
     delete ui;
 }
 
@@ -60,7 +60,10 @@ void Channel::addMessage(const QString &source, const QString &message)
 void Channel::on_lineEdit_returnPressed()
 {
     auto text = ui->lineEdit->text();
-    emit ircSay(this, text);
+    if (text.startsWith('/'))
+        ircSendRaw(text.right(text.length() - 1));
+    else
+        ircSay(this, text);
     ui->lineEdit->clear();
 }
 

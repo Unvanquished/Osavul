@@ -74,11 +74,14 @@ private slots:
     void on_ircTabWidget_tabCloseRequested(int index);
     void on_actionAdd_to_Favorites_triggered();
     void on_ircChat_addStringToChannel(Channel *channel, const QString &string);
+    void on_ircChat_highlight(Channel *channel);
     void on_filterBar_textEdited(const QString &arg1);
     void on_actionAbout_Osavul_triggered();
     void on_actionAbout_Qt_triggered();
     void connectTo(const QString &host);
     void on_actionPreferences_triggered();
+
+    void on_ircTabWidget_currentChanged(QWidget *arg1);
 
 public slots:
     void on_ircChat_serverCommMessage(const QString &s);

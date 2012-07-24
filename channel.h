@@ -46,9 +46,10 @@ private slots:
     void on_listWidget_currentTextChanged(const QString &currentText);
 
 signals:
-    void ircSay(Channel *, const QString &text);
+    void ircSay(Channel *, const QString &);
     void ircJoin(Channel *);
     void ircPart(Channel *);
+    void ircSendRaw(const QString &);
 
 private:
     Ui::Channel *ui;
