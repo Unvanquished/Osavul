@@ -1,8 +1,8 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include <QDialog>
-#include <QSettings>
+#include <QtGui/QDialog>
+#include <QtCore/QSettings>
 
 namespace Ui {
     class SettingsDialog;

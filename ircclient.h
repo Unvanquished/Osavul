@@ -18,17 +18,11 @@
 #ifndef IRCCLIENT_H
 #define IRCCLIENT_H
 
-#include <QString>
-#include <QTcpSocket>
-#include <QWidget>
-#include <QTime>
-#include <QStringBuilder>
-#include <QHash>
-#include <QString>
-#include <QSettings>
-#include <QLatin1String>
-#include <QTextDocument>
 #include "channel.h"
+#include <QtNetwork/QTcpSocket>
+#include <QtCore/QStringBuilder>
+#include <QtCore/QSettings>
+#include <QtGui/QTextDocument> // for Qt::escape()
 
 namespace IrcUtil {
     QString clean(const QString &user);

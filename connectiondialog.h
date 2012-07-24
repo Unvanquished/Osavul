@@ -18,8 +18,8 @@
 #ifndef CONNECTIONDIALOG_H
 #define CONNECTIONDIALOG_H
 
-#include <QDialog>
-#include <QSettings>
+#include <QtGui/QDialog>
+#include <QtCore/QSettings>
 
 namespace Ui {
     class ConnectionDialog;

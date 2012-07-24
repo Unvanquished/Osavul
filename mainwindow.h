@@ -24,21 +24,17 @@
 #include "connectiondialog.h"
 #include "richtextdelegate.h"
 #include "settingsdialog.h"
-#include <QMainWindow>
-#include <QDebug>
-#include <QTime>
-#include <QTimer>
-#include <QThread>
-#include <QProcess>
-#include <QTableWidgetItem>
-#include <QSettings>
-#include <QSystemTrayIcon>
-#include <QMessageBox>
-#include <QCloseEvent>
-#include <QSignalMapper>
-#include <QInputDialog>
-#include <QTreeWidgetItem>
-#include <QSignalMapper>
+#include <QtGui/QMainWindow>
+#include <QtCore/QTimer>
+#include <QtCore/QThread>
+#include <QtCore/QProcess>
+#include <QtGui/QTableWidgetItem>
+#include <QtCore/QSettings>
+#include <QtGui/QSystemTrayIcon>
+#include <QtGui/QMessageBox>
+#include <QtGui/QCloseEvent>
+#include <QtCore/QSignalMapper>
+#include <QtGui/QInputDialog>
 
 namespace Ui {
     class MainWindow;

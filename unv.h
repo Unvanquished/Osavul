@@ -18,17 +18,11 @@
 #ifndef UNV_H
 #define UNV_H
 
-#include <QObject>
-#include <QUdpSocket>
-#include <QList>
-#include <QMetaType>
-#include <QElapsedTimer>
-#include <QList>
-#include <QStringBuilder>
-#include <QColor>
-#include <QMetaObject>
-#include <QTimer>
-#include <QTextDocument>
+#include <QtNetwork/QUdpSocket>
+#include <QtCore/QElapsedTimer>
+#include <QtCore/QStringBuilder>
+#include <QtGui/QColor>
+#include <QtGui/QTextDocument> // for Qt::escape()
 
 namespace unv {
     class Server : public QObject

@@ -18,9 +18,8 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
-#include <QWidget>
-#include <QListWidgetItem>
-#include <QTime>
+#include <QtGui/QWidget>
+#include <QtCore/QTime>
 
 namespace Ui {
     class Channel;

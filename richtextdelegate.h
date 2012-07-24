@@ -18,11 +18,10 @@
 #ifndef RICHTEXTDELEGATE_H
 #define RICHTEXTDELEGATE_H
 
-#include <QStyledItemDelegate>
-#include <QLabel>
-#include <QTextDocument>
-#include <QPainter>
-#include <QApplication>
+#include <QtGui/QStyledItemDelegate>
+#include <QtGui/QLabel>
+#include <QtGui/QTextDocument>
+#include <QtGui/QPainter>
 
 class RichTextDelegate : public QStyledItemDelegate {
 public:
