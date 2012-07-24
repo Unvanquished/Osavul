@@ -42,29 +42,15 @@ public:
     quint16 port() const { return sock.peerPort(); }
 
     void connectToHost(const QString &host, quint16 port);
-
     const QString &nickName() const { return m_nickName; }
-    const QString &realName() const { return m_realName; }
-    const QString &userName() const { return m_userName; }
-
     bool isConnected() { return sock.isOpen(); }
 
 protected:
 
 private:
     QTcpSocket sock;
-
     QSettings settings;
-
     QString m_nickName;
-    QString m_realName;
-    QString m_userName;
-
-    QString clean(const QString &user);
-    QString coloredName(const QString &peer);
-
-    void process(QByteArray ins);
-    QString htmlize(const QString &message);
 
     QHash<QString, Channel *> channels;
 
@@ -79,18 +65,6 @@ public slots:
         this->send("NICK " % name);
         emit nickNameChanged(name);
     }
-    void setRealName(const QString &name)
-    {
-        m_realName = name;
-        settings.setValue("realName", name);
-        emit realNameChanged(name);
-    }
-    void setUserName(const QString &name)
-    {
-        m_userName = name;
-        settings.setValue("userName", name);
-        emit userNameChanged(name);
-    }
 
     void join(Channel *channel);
     void part(Channel *channel);
@@ -101,11 +75,7 @@ private slots:
 
 signals:
     void serverCommMessage(const QString &x);
-
     void nickNameChanged(const QString &);
-    void realNameChanged(const QString &);
-    void userNameChanged(const QString &);
-
     void addStringToChannel(Channel *channel, const QString &string);
 };
 
