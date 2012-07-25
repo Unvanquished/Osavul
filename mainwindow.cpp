@@ -326,6 +326,10 @@ void MainWindow::on_refreshButton_clicked()
     ui->serverTable->setRowCount(0);
     gameServersShown.clear();
 
+    updateTeamTables({ });
+    ui->serverName->setText("");
+    ui->serverHost->setText("");
+
     ui->refreshButton->setEnabled(false);
     msv->query();
 
