@@ -1,0 +1,52 @@
+﻿<clanList>
+    <clan>
+        <name>Nation of Stupidity</name>
+        <tag>{NoS}</tag>
+        <irc>##tremulost</irc>
+        <url>http://s1.zetaboards.com/AC_NoS/index</url>
+    </clan>
+    <clan>
+        <name>Player Killers</name>
+        <tag>.^Pk</tag>
+        <irc>##pk</irc>
+        <url>http://pk.uncannygaming.com</url>
+    </clan>
+    <clan>
+        <name>Generic Trash</name>
+        <tag>GT</tag>
+        <irc>##gtclam</irc>
+        <url>https://sites.google.com/site/extremelyfirm</url>
+    </clan>
+    <clan>
+        <name>Distributed Denial of Skill</name>
+        <tag>.ddos</tag>
+        <irc>##ddos</irc>
+        <url>http://ddos-tremulous.eu</url>
+    </clan>
+    <clan>
+        <name>N7</name>
+        <tag>[N7]</tag>
+    </clan>
+    <clan>
+        <name>Unknown clan</name>
+        <tag>.:)(:.</tag>
+    </clan>
+    <clan>
+        <name>Xenocide</name>
+        <tag>(&gt;&lt;)</tag>
+        <irc>##xenocide</irc>
+        <url>http://interpsy.com/x</url>
+    </clan>
+    <clan>
+        <name>Defenders of Hovel</name>
+        <tag>[DoH]</tag>
+        <url>http://doh.clanclan.de</url>
+    </clan>
+    <clan>
+        <name>XxAWESOMExX</name>
+        <tag>|XAX|</tag>
+        <irc>#XxAWESOMExX</irc>
+        <url>http://xxawesomexx.freeforums.org</url>
+    </clan>
+</clanList>
+
