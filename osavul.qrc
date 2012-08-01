@@ -1,6 +1,7 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-	<qresource>
-		<file>images/unvanquished_tray_icon.png</file>
-	</qresource>
+<RCC>
+    <qresource prefix="/">
+        <file>images/unvanquished_tray_icon.png</file>
+        <file>clans/clan_schema.xsd</file>
+        <file>clans/clans.xml</file>
+    </qresource>
 </RCC>

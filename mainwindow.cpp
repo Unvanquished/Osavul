@@ -128,6 +128,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->move(settings.value("pos", this->pos()).toPoint());
     settings.endGroup();
 
+    this->loadClanList();
+
     qsrand(static_cast<uint>(QTime::currentTime().msec()));
 }
 
@@ -153,6 +155,88 @@ MainWindow::~MainWindow()
     settings.endArray();
 
     delete ui;
+}
+
+void MainWindow::loadClanList()
+{
+    static const QString who = "Clan List Parser";
+
+    QXmlSchema schema;
+    if (!schema.load(QUrl::fromLocalFile(":/clans/clan_schema.xsd"))) {
+        QMessageBox::critical(this,
+                              who,
+                              "Clan list XML schema is invalid!");
+        return;
+    }
+
+    QFile clanList(":/clans/clans.xml");
+    if (!clanList.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this,
+                              who,
+                              "Couldn't open clan list");
+        return;
+    }
+
+    QXmlSchemaValidator validator(schema);
+    if (!validator.validate(&clanList)) {
+        QMessageBox::critical(this,
+                              who,
+                              "Clan list data is invalid");
+        return;
+    }
+
+    // the validation changes position in the file
+    clanList.reset();
+
+    QXmlStreamReader xml(&clanList);
+
+    xml.readNextStartElement();
+    Q_ASSERT(xml.isStartElement() && xml.name() == "clanList");
+
+    int row;
+    while (xml.readNextStartElement()) {
+        ui->clanTableWidget->insertRow(row = ui->clanTableWidget->rowCount());
+        while (xml.readNextStartElement()) {
+            int column;
+
+            if (xml.name() == "name")
+                column = 0;
+            else if (xml.name() == "tag")
+                column = 1;
+            else if (xml.name() == "irc")
+                column = 2;
+            else if (xml.name() == "url")
+                column = 3;
+            else {
+                xml.skipCurrentElement();
+                continue;
+            }
+
+            auto it = new QTableWidgetItem(xml.readElementText());
+
+            ui->clanTableWidget->setItem(row, column, it);
+            ui->clanTableWidget->resizeColumnsToContents();
+        }
+        continue;
+    }
+}
+
+void MainWindow::on_clanTableWidget_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *)
+{
+    if (!current)
+        return;
+
+    switch (current->column()) {
+        case 3:
+            QDesktopServices::openUrl(QUrl(current->text()));
+            break;
+        case 2:
+            if (chat->isConnected())
+                this->openChannel(current->text());
+            break;
+        default:
+            break;
+    }
 }
 
 void MainWindow::on_ircChat_addStringToChannel(Channel *channel, const QString &string)
@@ -648,4 +732,21 @@ void MainWindow::on_ircTabWidget_currentChanged(QWidget *arg1)
             ui->ircTabWidget->setTabText(ui->ircTabWidget->indexOf(arg1),
                                          arg1->property("previousText").toString());
     arg1->setProperty("highlighted", false);
+}
+
+Channel *MainWindow::openChannel(const QString &channel)
+{
+    Channel *newChannel = new Channel(this, channel);
+    chat->join(newChannel);
+
+    connect(newChannel, SIGNAL(ircPart(Channel*)),
+            chat, SLOT(part(Channel*)));
+    connect(newChannel, SIGNAL(ircSay(Channel*,QString)),
+            chat, SLOT(say(Channel*,QString)));
+    connect(newChannel, SIGNAL(ircSendRaw(QString)),
+            chat, SLOT(send(QString)));
+    ui->ircTabWidget->addTab(newChannel, channel);
+    ui->ircTabWidget->setCurrentWidget(newChannel);
+
+    return newChannel;
 }

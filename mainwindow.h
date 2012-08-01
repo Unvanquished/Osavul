@@ -35,6 +35,10 @@
 #include <QtGui/QCloseEvent>
 #include <QtCore/QSignalMapper>
 #include <QtGui/QInputDialog>
+#include <QtCore/QXmlStreamReader>
+#include <QtXmlPatterns/QXmlSchema>
+#include <QtXmlPatterns/QXmlSchemaValidator>
+#include <QtGui/QDesktopServices>
 
 namespace Ui {
     class MainWindow;
@@ -80,15 +84,17 @@ private slots:
     void on_actionAbout_Qt_triggered();
     void connectTo(const QString &host);
     void on_actionPreferences_triggered();
-
     void on_ircTabWidget_currentChanged(QWidget *arg1);
+    void on_clanTableWidget_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *);
 
 public slots:
     void on_ircChat_serverCommMessage(const QString &s);
     void on_masterServer_serverQueried(unv::GameServer *svNew);
 
 private:
+    void loadClanList();
     void updateTeamTables(const QList<unv::Player> &playerList);
+    Channel *openChannel(const QString &channel);
 
 signals:
     void ircChangeNick(const QString &nick);
