@@ -8,6 +8,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->setupUi(this);
     ui->ircConnectOnStartupCheckBox->setChecked(settings.value("ircConnectOnStartup").toBool());
     ui->daemonPathLineEdit->setText(settings.value("unv/clientExecutablePath").toString());
+    ui->daemonPathLineEdit->adjustSize();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -19,4 +20,16 @@ void SettingsDialog::on_buttonBox_accepted()
 {
     settings.setValue("irc/connectOnStartup", ui->ircConnectOnStartupCheckBox->isChecked());
     settings.setValue("unv/clientExecutablePath", ui->daemonPathLineEdit->text());
+}
+
+void SettingsDialog::on_daemonPathBrowseButton_clicked()
+{
+    QString path =
+        QFileDialog::getOpenFileName(this,
+                                     "Path to Daemon",
+                                     "",
+                                     "");
+
+    ui->daemonPathLineEdit->setText(path);
+    ui->daemonPathLineEdit->adjustSize();
 }

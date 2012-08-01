@@ -455,7 +455,8 @@ void MainWindow::connectTo(const QString &host)
     fcntl(STDERR_FILENO, F_SETFD, FD_CLOEXEC, 1);
 #endif
 
-    if (!QProcess::startDetached(path, { "+connect", host }))
+    if (!QProcess::startDetached(path, { "+connect", host },
+                                 QDir::toNativeSeparators(path.left(path.lastIndexOf('/')))))
         ui->statusBar->showMessage(tr("Daemon failed to start!"), TIMEOUT);
 }
 
