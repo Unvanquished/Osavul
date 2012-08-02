@@ -1,11 +1,11 @@
 [Desktop Entry]
 Version=1.0
 Name=Osavul
-GenericName=Server Browser
+GenericName=Unvanquished Server Browser
 Comment=Server browser for Unvanquished
 Icon=unvanquished
 Terminal=false
-Type=Application
-Categories=Network;
+Type=
+Categories=Game;ActionGame;StrategyGame;
 Exec=/usr/bin/osavul
 StartupNotify=true

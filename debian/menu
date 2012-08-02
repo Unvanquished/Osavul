@@ -1,6 +1,6 @@
 ?package(osavul): \
 	needs="X11" \
-	section="Apps/Net" \
+	section="Games/Action" \
 	title="Osavul" \
 	command="/usr/bin/osavul" \
 	icon="/usr/share/icons/hicolor/128x128/apps/unvanquished.png"
