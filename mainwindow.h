@@ -97,7 +97,7 @@ private:
     void loadClanList();
     void loadFavorites();
     void clearTeamTables();
-    void updateTeamTables(const QList<unv::Player> &playerList);
+    void updateTeamTables(const QList<unv::Player> &playerList, const QDateTime &lastUpdateTime);
     Channel *openChannel(const QString &channel);
     void addFavorite(unv::FavoriteEntry fav);
 

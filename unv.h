@@ -21,6 +21,7 @@
 #include <QtNetwork/QUdpSocket>
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QStringBuilder>
+#include <QtCore/QDateTime>
 #include <QtGui/QColor>
 #include <QtGui/QTextDocument> // for Qt::escape()
 
@@ -96,6 +97,7 @@ namespace unv {
         QString name() const { return info.name; }
 
         const QList<Player> &players() const { return m_players; }
+        const QDateTime &lastUpdateTime() const { return m_lastUpdateTime; }
         bool isPure() const { return info.pure; }
 
         QString formattedAddress(const QString &fmt = "%1:%2") const;
@@ -116,6 +118,7 @@ namespace unv {
         } info;
 
         QList<Player> m_players;
+        QDateTime m_lastUpdateTime;
 
         void processOOB(QList<QByteArray> st);
 

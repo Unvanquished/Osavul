@@ -175,6 +175,8 @@ void GameServer::processOOB(QList<QByteArray> st)
         if (!st.isEmpty() && !(st.first() == ""))
             parseP(kvs.value("P", ""), st);
 
+        m_lastUpdateTime = QDateTime::currentDateTime();
+
         colorize(info.name);
         emit ready();
     } else { Q_ASSERT(false); }

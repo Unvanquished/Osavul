@@ -368,7 +368,7 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
 
     if (!isNew)
         if (ui->serverTable->currentItem()->data(Qt::UserRole).value<unv::GameServer *>() == sv)
-            updateTeamTables(sv->players());
+            updateTeamTables(sv->players(), sv->lastUpdateTime());
 
     ui->serverTable->resizeColumnsToContents();
     ui->serverTable->horizontalHeader()->setStretchLastSection(true);
@@ -391,7 +391,7 @@ void MainWindow::clearTeamTables()
     ui->serverLastUpdate->setText("");
 }
 
-void MainWindow::updateTeamTables(const QList<Player> &playerList)
+void MainWindow::updateTeamTables(const QList<Player> &playerList, const QDateTime &lastUpdateTime)
 {
     using namespace unv;
     static const QList<QTableWidget *> teamTables = { ui->alienTable, ui->humanTable };
@@ -422,7 +422,7 @@ void MainWindow::updateTeamTables(const QList<Player> &playerList)
         }
     }
 
-    ui->serverLastUpdate->setText(QDateTime::currentDateTime().toString(tr("'Last update: 'dddd hh:mm:ss")));
+    ui->serverLastUpdate->setText(lastUpdateTime.toString(tr("'Last update: 'dddd hh:mm:ss")));
 }
 
 void MainWindow::on_ircChat_serverCommMessage(const QString &s)
@@ -510,7 +510,7 @@ void MainWindow::on_serverTable_currentItemChanged(QTableWidgetItem *current, QT
     ui->serverName->setText(sv->name());
     ui->serverHost->setText(sv->formattedAddress());
 
-    updateTeamTables(sv->players());
+    updateTeamTables(sv->players(), sv->lastUpdateTime());
 }
 
 void MainWindow::on_actionRestore_triggered()
