@@ -96,6 +96,7 @@ public slots:
 private:
     void loadClanList();
     void loadFavorites();
+    void clearTeamTables();
     void updateTeamTables(const QList<unv::Player> &playerList);
     Channel *openChannel(const QString &channel);
     void addFavorite(unv::FavoriteEntry fav);

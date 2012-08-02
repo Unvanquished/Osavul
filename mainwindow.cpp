@@ -377,7 +377,7 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
         ui->statusBar->showMessage(templ.arg(ui->serverTable->rowCount()), TIMEOUT);
 }
 
-void MainWindow::updateTeamTables(const QList<Player> &playerList)
+void MainWindow::clearTeamTables()
 {
     using namespace unv;
     static const QList<QTableWidget *> teamTables = { ui->alienTable, ui->humanTable };
@@ -388,6 +388,15 @@ void MainWindow::updateTeamTables(const QList<Player> &playerList)
     }
 
     ui->spectatorList->clear();
+    ui->serverLastUpdate->setText("");
+}
+
+void MainWindow::updateTeamTables(const QList<Player> &playerList)
+{
+    using namespace unv;
+    static const QList<QTableWidget *> teamTables = { ui->alienTable, ui->humanTable };
+
+    clearTeamTables();
 
     for (const Player &p : playerList) {
         Player::Team team = p.team();
@@ -412,6 +421,8 @@ void MainWindow::updateTeamTables(const QList<Player> &playerList)
             ui->spectatorList->addItem(it);
         }
     }
+
+    ui->serverLastUpdate->setText(QDateTime::currentDateTime().toString(tr("'Last update: 'dddd hh:mm:ss")));
 }
 
 void MainWindow::on_ircChat_serverCommMessage(const QString &s)
@@ -427,9 +438,10 @@ void MainWindow::on_refreshButton_clicked()
     ui->serverTable->setRowCount(0);
     gameServersShown.clear();
 
-    updateTeamTables({ });
+    clearTeamTables();
     ui->serverName->setText("");
     ui->serverHost->setText("");
+    ui->serverLastUpdate->setText("");
 
     ui->refreshButton->setEnabled(false);
     msv->query();
@@ -497,6 +509,7 @@ void MainWindow::on_serverTable_currentItemChanged(QTableWidgetItem *current, QT
     auto sv = current->data(Qt::UserRole).value<unv::GameServer *>();
     ui->serverName->setText(sv->name());
     ui->serverHost->setText(sv->formattedAddress());
+
     updateTeamTables(sv->players());
 }
 
