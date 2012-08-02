@@ -129,7 +129,7 @@ namespace unv {
 
     public:
         MasterServer(const QString &host = "unvanquished.net", quint16 port = 27950)
-            : Server(host, port, "\xff\xff\xff\xffgetservers 85 full empty") { }
+            : Server(host, port, "\xff\xff\xff\xffgetservers 86 full empty") { }
         ~MasterServer() { }
 
         const QList<GameServer *> &servers() { return gameServers; }
