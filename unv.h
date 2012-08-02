@@ -150,9 +150,15 @@ namespace unv {
         QString name;
         QString host;
         quint16 port;
+
+        bool operator ==(const FavoriteEntry &other) const
+        {
+            return (name == other.name && host == other.host && port == other.port);
+        }
     };
 }
 
 Q_DECLARE_METATYPE(unv::GameServer *)
+Q_DECLARE_METATYPE(unv::FavoriteEntry *)
 
 #endif // UNV_H

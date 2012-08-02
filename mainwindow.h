@@ -24,6 +24,7 @@
 #include "connectiondialog.h"
 #include "richtextdelegate.h"
 #include "settingsdialog.h"
+#include "favoritesdialog.h"
 #include <QtGui/QMainWindow>
 #include <QtCore/QTimer>
 #include <QtCore/QThread>
@@ -86,6 +87,7 @@ private slots:
     void on_actionPreferences_triggered();
     void on_ircTabWidget_currentChanged(QWidget *arg1);
     void on_clanTableWidget_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *);
+    void on_actionManage_Favorites_triggered();
 
 public slots:
     void on_ircChat_serverCommMessage(const QString &s);
@@ -93,8 +95,10 @@ public slots:
 
 private:
     void loadClanList();
+    void loadFavorites();
     void updateTeamTables(const QList<unv::Player> &playerList);
     Channel *openChannel(const QString &channel);
+    void addFavorite(unv::FavoriteEntry fav);
 
 signals:
     void ircChangeNick(const QString &nick);
@@ -113,5 +117,7 @@ private:
     unv::MasterServer *msv;
     IrcClient *chat;
 };
+
+Q_DECLARE_METATYPE(QSignalMapper *)
 
 #endif // MAINWINDOW_H

@@ -47,10 +47,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     trayIconMenu->addAction(ui->actionRestore);
-
-    QMenu *favoriteServersMenu = trayIconMenu->addMenu(tr("Favorite servers"));
-
     trayIconMenu->addSeparator();
+    trayIconMenu->addMenu(ui->menuFavorites);
     trayIconMenu->addAction(ui->actionQuit);
 
     trayIcon->setContextMenu(trayIconMenu);
@@ -99,28 +97,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->serverTable->addAction(ui->actionAdd_to_Favorites);
 
-    // restore favorites
-    int size = settings.beginReadArray("favorites");
-
-    QSignalMapper *mapper = new QSignalMapper(this);
-
-    for (int i = 0; i < size; ++i) {
-        settings.setArrayIndex(i);
-        unv::FavoriteEntry fav;
-
-        fav.name = settings.value("name").toString();
-        fav.host = settings.value("address").toString();
-        fav.port = settings.value("port").toUInt();
-
-        favorites.append(fav);
-
-        QAction *action = favoriteServersMenu->addAction(fav.name);
-        connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
-        mapper->setMapping(action, QString("%1:%2").arg(fav.host).arg(fav.port));
-    }
-
-    settings.endArray();
-    connect(mapper, SIGNAL(mapped(QString)), this, SLOT(connectTo(QString)));
+    this->loadFavorites();
 
     // restore window geometry
     settings.beginGroup("mainWindow");
@@ -131,6 +108,46 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->loadClanList();
 
     qsrand(static_cast<uint>(QTime::currentTime().msec()));
+}
+
+void MainWindow::loadFavorites()
+{
+    int size = settings.beginReadArray("favorites");
+
+    if (size)
+        ui->menuFavorites->insertSeparator(ui->actionManage_Favorites);
+
+    for (int i = 0; i < size; ++i) {
+        settings.setArrayIndex(i);
+        unv::FavoriteEntry fav;
+
+        fav.name = settings.value("name").toString();
+        fav.host = settings.value("address").toString();
+        fav.port = settings.value("port").toUInt();
+
+        this->addFavorite(fav);
+    }
+
+    settings.endArray();
+}
+
+void MainWindow::addFavorite(FavoriteEntry fav)
+{
+    static QSignalMapper *mapper;
+
+    if (!mapper) {
+        ui->menuFavorites->insertSeparator(ui->actionManage_Favorites);
+
+        mapper = new QSignalMapper(this);
+        connect(mapper, SIGNAL(mapped(QString)), this, SLOT(connectTo(QString)));
+    }
+
+    favorites << fav;
+    QAction *action = new QAction(fav.name, ui->menuFavorites);
+    action->setData(QVariant::fromValue<QSignalMapper *>(mapper));
+    ui->menuFavorites->insertAction(ui->actionManage_Favorites, action);
+    connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
+    mapper->setMapping(action, QString("%1:%2").arg(fav.host).arg(fav.port));
 }
 
 MainWindow::~MainWindow()
@@ -683,7 +700,8 @@ void MainWindow::on_actionAdd_to_Favorites_triggered()
     f.name = sv->name();
     f.host = sv->host();
     f.port = sv->port();
-    favorites << f;
+
+    this->addFavorite(f);
 }
 
 void MainWindow::on_filterBar_textEdited(const QString &arg1)
@@ -750,4 +768,25 @@ Channel *MainWindow::openChannel(const QString &channel)
     ui->ircTabWidget->setCurrentWidget(newChannel);
 
     return newChannel;
+}
+
+void MainWindow::on_actionManage_Favorites_triggered()
+{
+    FavoritesDialog dlg(favorites, this);
+
+    if (dlg.exec() == FavoritesDialog::Accepted) {
+        QList<QAction *> actions = ui->menuFavorites->actions();
+        for (QAction *action : actions)
+            if (!action->data().value<QSignalMapper *>())
+                actions.removeOne(action);
+
+        for (const QPair<int, FavoriteEntry> &pair : dlg.modifiedFavorites()) {
+            favorites.replace(pair.first, pair.second);
+            QAction *action = actions.at(pair.first);
+            QSignalMapper *mapper = action->data().value<QSignalMapper *>();
+            action->setText(pair.second.name);
+            mapper->removeMappings(action);
+            mapper->setMapping(action, QString("%1:%2").arg(pair.second.host).arg(pair.second.port));
+        }
+    }
 }

@@ -709,7 +709,18 @@
     <addaction name="actionAbout_Osavul"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
+   <widget class="QMenu" name="menuFavorites">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>Favorites</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionManage_Favorites"/>
+   </widget>
    <addaction name="menuOsavul"/>
+   <addaction name="menuFavorites"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -763,6 +774,11 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionManage_Favorites">
+   <property name="text">
+    <string>Manage Favorites…</string>
    </property>
   </action>
  </widget>

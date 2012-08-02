@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     ircclient.cpp \
     richtextdelegate.cpp \
     settingsdialog.cpp \
-    channel.cpp
+    channel.cpp \
+    favoritesdialog.cpp
 
 HEADERS  += mainwindow.h \
     connectiondialog.h \
@@ -25,12 +26,14 @@ HEADERS  += mainwindow.h \
     ircclient.h \
     richtextdelegate.h \
     settingsdialog.h \
-    channel.h
+    channel.h \
+    favoritesdialog.h
 
 FORMS += mainwindow.ui \
     connectiondialog.ui \
     settingsdialog.ui \
-    channel.ui
+    channel.ui \
+    favoritesdialog.ui
 
 TRANSLATIONS = osavul_ua.ts osavul_en_GB.ts
 
