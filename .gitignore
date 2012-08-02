@@ -19,6 +19,7 @@ osavul
 Makefile
 moc_channel.cpp
 moc_connectiondialog.cpp
+moc_favoritesdialog.cpp
 moc_ircclient.cpp
 moc_mainwindow.cpp
 moc_settingsdialog.cpp
@@ -26,6 +27,7 @@ moc_unv.cpp
 qrc_osavul.cpp
 ui_channel.h
 ui_connectiondialog.h
+ui_favoritesdialog.h
 ui_mainwindow.h
 ui_settingsdialog.h
 
@@ -33,3 +35,8 @@ ui_settingsdialog.h
 *~
 *.orig
 *.rej
+
+# Packaging
+debian/files
+debian/*.debhelper*
+debian/*.substvars
