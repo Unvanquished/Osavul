@@ -177,7 +177,7 @@
                <bool>false</bool>
               </property>
               <property name="frameShape">
-               <enum>QFrame::HLine</enum>
+               <enum>QFrame::NoFrame</enum>
               </property>
               <property name="frameShadow">
                <enum>QFrame::Plain</enum>
