@@ -475,6 +475,7 @@ void MainWindow::on_joinButton_clicked()
 void MainWindow::connectTo(const QString &host)
 {
     QString path = settings.value("unv/clientExecutablePath", "unvanquished").toString();
+    QString url = "unv://" + host;
 
     ui->statusBar->showMessage(tr("Launching Unvanquished..."), TIMEOUT);
 
@@ -484,7 +485,7 @@ void MainWindow::connectTo(const QString &host)
     fcntl(STDERR_FILENO, F_SETFD, FD_CLOEXEC, 1);
 #endif
 
-    if (!QProcess::startDetached(path, { "+connect", host },
+    if (!QProcess::startDetached(path, { url },
                                  QDir::toNativeSeparators(path.left(path.lastIndexOf('/')))))
         ui->statusBar->showMessage(tr("Daemon failed to start!"), TIMEOUT);
 }
