@@ -412,7 +412,8 @@ void MainWindow::updateTeamTables(const QList<Player> &playerList, const QDateTi
             QTableWidgetItem *pingItem = new QTableWidgetItem;
             pingItem->setData(Qt::EditRole, p.ping());
             tbl->setItem(j, 1, pingItem);
-            tbl->setItem(j, 2, new QTableWidgetItem(p.name()));
+            QTableWidgetItem *nameItem = new QTableWidgetItem(p.name());
+            tbl->setItem(j, 2, nameItem);
 
             // sort by score
             tbl->sortByColumn(0);
@@ -485,8 +486,8 @@ void MainWindow::connectTo(const QString &host)
     fcntl(STDERR_FILENO, F_SETFD, FD_CLOEXEC, 1);
 #endif
 
-    if (!QProcess::startDetached(path, { url },
-                                 QDir::toNativeSeparators(path.left(path.lastIndexOf('/')))))
+    QString cwd = QDir::toNativeSeparators(path.left(path.lastIndexOf('/')));
+    if (!QProcess::startDetached(path, { url }, cwd))
         ui->statusBar->showMessage(tr("Daemon failed to start!"), TIMEOUT);
 }
 

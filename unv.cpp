@@ -57,6 +57,9 @@ void colorize(QString &s)
         QColor::fromRgbF(1.00, 1.00, 0.50)  // O             31
     };
 
+    static const QString openTag  = "<span style='color: %1'>";
+    static const QString closeTag = "</span>";
+
     quint8 k = 0;
 
     for (quint8 i = 0; i < s.length(); ++i) {
@@ -71,12 +74,18 @@ void colorize(QString &s)
         if (index > colors.size())
             index &= colors.size() - 1;
 
-        ++k;
-        s.replace(i, 2, "<span style='color: " % colors.at(index).name() % "'>");
+        if (index == 7) {
+            // ensure readability by letting the system style choose the base color
+            s.replace(i, 2, closeTag);
+            continue;
+        }
+
+        s.replace(i, 2, openTag.arg(colors.at(index).name()));
+        ++k, ++i;
     }
 
     for ( ; k > 0; --k)
-        s.append("</span>");
+        s.append(closeTag);
 }
 
 Server::Server(const QString &host, quint16 port, const QByteArray &queryMessage = "")
