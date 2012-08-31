@@ -1,9 +1,8 @@
-Osavul
-======
+# Osavul
 
 Unvanquished server browser
 
-=Build instructions=
-
+## Build instructions
+```
 qmake && make -j2
-./Osavul
+./osavul```
