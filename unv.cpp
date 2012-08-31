@@ -20,7 +20,8 @@
 
 using namespace unv;
 
-void colorize(QString &s)
+// CAUTION: mutates the argument
+void htmlColorize(QString &s)
 {
     static const QList<QColor> colors = {
         QColor::fromRgbF(0.20, 0.20, 0.20), // 0 - black     00
@@ -57,8 +58,8 @@ void colorize(QString &s)
         QColor::fromRgbF(1.00, 1.00, 0.50)  // O             31
     };
 
-    static const QString openTag  = "<span style='color: %1'>";
-    static const QString closeTag = "</span>";
+    static const QString openTag  = "<font color='%1'>";
+    static const QString closeTag = "</font>";
 
     quint8 k = 0;
 
@@ -76,7 +77,15 @@ void colorize(QString &s)
 
         if (index == 7) {
             // ensure readability by letting the system style choose the base color
-            s.replace(i, 2, closeTag);
+            if (!k)
+                s.remove(i, 2);
+            else {
+                // cancel out all (previous) colors
+                s.remove(2 * k);
+                while (k > 0)
+                    s.insert(i, closeTag), --k;
+            }
+
             continue;
         }
 
@@ -84,8 +93,8 @@ void colorize(QString &s)
         ++k, ++i;
     }
 
-    for ( ; k > 0; --k)
-        s.append(closeTag);
+    while (k > 0)
+        s.append(closeTag), --k;
 }
 
 Server::Server(const QString &host, quint16 port, const QByteArray &queryMessage = "")
@@ -137,7 +146,7 @@ Player GameServer::constructPlayer(Player::Team t, const QByteArray &entry)
 
     QString s = entry.mid(entry.indexOf("\"") + 1, entry.length() - entry.indexOf("\"") - 2);
     s = Qt::escape(s);
-    colorize(s);
+    htmlColorize(s);
 
     // the order of evaluation in argument lists is undefined, so…
     auto score = ss.takeFirst().toInt();
@@ -186,7 +195,7 @@ void GameServer::processOOB(QList<QByteArray> st)
 
         m_lastUpdateTime = QDateTime::currentDateTime();
 
-        colorize(info.name);
+        htmlColorize(info.name);
         emit ready();
     } else { Q_ASSERT(false); }
 }
