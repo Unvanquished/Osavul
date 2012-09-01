@@ -1,3 +1,9 @@
+osavul (1.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Darren Salt <devspam@moreofthesa.me.uk>  Sat, 01 Sep 2012 21:54:05 +0100
+
 osavul (0+git104820b-1) unstable; urgency=low
 
   * Development snapshot.
