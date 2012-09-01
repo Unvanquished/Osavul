@@ -3,7 +3,7 @@ Section: games
 Priority: extra
 Maintainer: Darren Salt <devspam@moreofthesa.me.uk>
 Build-Depends: debhelper (>= 8.0.0), libqt4-dev, g++ (>= 4.6)
-Standards-Version: 3.9.2
+Standards-Version: 3.9.3
 
 Package: osavul
 Architecture: any

@@ -1,6 +1,10 @@
 osavul (1.0.0-1) unstable; urgency=low
 
   * Initial release.
+  * Bump standards version to 3.9.3.
+  * Add some licence text and the repository URL to debian/copyright.
+  * Move the binary to /usr/games/osavul.
+  * Put the menu entry in the ‘Games’ section.
 
  -- Darren Salt <devspam@moreofthesa.me.uk>  Sat, 01 Sep 2012 21:54:05 +0100
 
