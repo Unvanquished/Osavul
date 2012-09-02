@@ -72,6 +72,11 @@ void htmlColorize(QString &s)
         if (index < 0)
             continue;
 
+        if (index == '^' - '0') {
+            s.remove(i, 1);
+            continue;
+        }
+
         if (index > colors.size())
             index &= colors.size() - 1;
 
