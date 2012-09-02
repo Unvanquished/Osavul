@@ -66,7 +66,7 @@ private slots:
 
     void on_actionRestore_triggered();
     void on_actionQuit_triggered();
-    void on_trayIcon_activated(QSystemTrayIcon::ActivationReason reason);
+    void when_trayIcon_activated(QSystemTrayIcon::ActivationReason reason);
 
     void on_showSpectatorsButton_clicked(bool checked);
     void on_playerFilterLineEdit_textEdited(const QString &arg1);
@@ -94,6 +94,7 @@ public slots:
     void on_masterServer_serverQueried(unv::GameServer *svNew);
 
 private:
+    void detectSystemTray();
     void loadClanList();
     void loadFavorites();
     void clearTeamTables();
@@ -112,8 +113,8 @@ private:
     Ui::MainWindow *ui;
     QHash<unv::GameServer *, QTableWidgetItem *> gameServersShown;
 
-    QMenu *trayIconMenu;
     QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
 
     unv::MasterServer *msv;
     IrcClient *chat;

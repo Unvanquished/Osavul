@@ -27,17 +27,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName("Osavul");
     QApplication::setApplicationVersion("0.1alpha");
     QApplication::setWindowIcon(QIcon(":images/unvanquished_tray_icon.png"));
-
-    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-        QMessageBox::warning(0,
-                             QObject::tr("Systray"),
-                             QObject::tr("Osavul could not detect any system tray on this system. "
-                                         "Systray support will be disabled."));
-        QApplication::setQuitOnLastWindowClosed(true);
-    }
-
     QApplication::setQuitOnLastWindowClosed(false);
-
 
     MainWindow w;
     w.setWindowTitle("Osavul");

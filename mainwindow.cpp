@@ -27,14 +27,10 @@
 
 using namespace unv;
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow),
+    trayIcon(0), trayIconMenu(0)
 {
-    // those are here for connectSlotsByName
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setObjectName("trayIcon");
-
-    trayIconMenu = new QMenu(this);
-    trayIconMenu->setObjectName("trayIconMenu");
+    this->detectSystemTray();
 
     chat = new IrcClient(this);
     chat->setObjectName("ircChat");
@@ -43,18 +39,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     msv->setParent(this);
     msv->setObjectName("masterServer");
 
-    // and this is where connectSlotsByName happens
+    // this is where connectSlotsByName happens
     ui->setupUi(this);
 
-    trayIconMenu->addAction(ui->actionRestore);
-    trayIconMenu->addSeparator();
-    trayIconMenu->addMenu(ui->menuFavorites);
-    trayIconMenu->addAction(ui->actionQuit);
+    // calling isSystemTrayAvailable() in such cases will return true if the system tray started
+    // being available _after_ it is found out that it isn't, which is not the desired behavior.
+    // on the other hand, trayIcon and trayIconMenu are only initialized once in a Osavul's lifetime.
+    if (trayIcon && trayIconMenu) {
+        trayIconMenu->addAction(ui->actionRestore);
+        trayIconMenu->addSeparator();
+        trayIconMenu->addMenu(ui->menuFavorites);
+        trayIconMenu->addAction(ui->actionQuit);
 
-    trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":images/unvanquished_tray_icon.png"));
-    trayIcon->setToolTip(tr("Osavul, the Unvanquished server browser"));
-    trayIcon->show();
+        trayIcon->setContextMenu(trayIconMenu);
+        trayIcon->setIcon(QIcon(":images/unvanquished_tray_icon.png"));
+        trayIcon->setToolTip(tr("Osavul, the Unvanquished server browser"));
+        trayIcon->show();
+    }
 
     // loading the UI settings
     bool optionState = settings.value("mainWindow/showSpectatorList").toBool();
@@ -108,6 +109,37 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->loadClanList();
 
     qsrand(static_cast<uint>(QTime::currentTime().msec()));
+}
+
+void MainWindow::detectSystemTray()
+{
+    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+        if (!settings.value("mainWindow/doNotShowTrayUnavailableNotice").toBool()) {
+            QMessageBox mb(QMessageBox::Warning,
+                           tr("Systray"),
+                           tr("Osavul could not detect any system tray on this system. "
+                              "Systray support will be disabled."),
+                           QMessageBox::Ok,
+                           this);
+
+            QPushButton *pb = mb.addButton(tr("Do not show again"), QMessageBox::RejectRole);
+
+            mb.exec();
+            if (mb.clickedButton() == pb)
+                settings.setValue("mainWindow/doNotShowTrayUnavailableNotice", true);
+        }
+
+        QApplication::setQuitOnLastWindowClosed(true);
+    } else {
+        trayIcon = new QSystemTrayIcon(this);
+        trayIcon->setObjectName("trayIcon");
+
+        trayIconMenu = new QMenu(this);
+        trayIconMenu->setObjectName("trayIconMenu");
+
+        connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                this, SLOT(when_trayIcon_activated(QSystemTrayIcon::ActivationReason)));
+    }
 }
 
 void MainWindow::loadFavorites()
@@ -272,12 +304,12 @@ void MainWindow::on_ircChat_highlight(Channel *channel)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (!trayIcon->isVisible())
+    if ((!trayIcon && !trayIconMenu) || !trayIcon->isVisible()) {
+        event->accept();
         return;
+    }
 
-    bool doShow = settings.value("mainWindow/showTrayNotice", true).toBool();
-
-    if (doShow) {
+    if (!settings.value("mainWindow/doNotShowHideToTrayNotice").toBool()) {
         QMessageBox mb(QMessageBox::Information,
                        tr("Osavul"),
                        tr("Osavul will keep running in the system tray. To terminate the program, "
@@ -290,7 +322,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         mb.exec();
 
         if (mb.clickedButton() == pb)
-            settings.setValue("mainWindow/showTrayNotice", false);
+            settings.setValue("mainWindow/doNotShowHideToTrayNotice", true);
     }
 
     this->hide();
@@ -525,7 +557,7 @@ void MainWindow::on_actionQuit_triggered()
     QApplication::quit();
 }
 
-void MainWindow::on_trayIcon_activated(QSystemTrayIcon::ActivationReason reason)
+void MainWindow::when_trayIcon_activated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
         case QSystemTrayIcon::Unknown:
