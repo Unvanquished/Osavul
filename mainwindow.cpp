@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // calling isSystemTrayAvailable() in such cases will return true if the system tray started
     // being available _after_ it is found out that it isn't, which is not the desired behavior.
-    // on the other hand, trayIcon and trayIconMenu are only initialized once in a Osavul's lifetime.
+    // on the other hand, trayIcon and trayIconMenu are only initialized once in Osavul's lifetime.
     if (trayIcon && trayIconMenu) {
         trayIconMenu->addAction(ui->actionRestore);
         trayIconMenu->addSeparator();
