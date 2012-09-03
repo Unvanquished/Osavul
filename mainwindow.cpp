@@ -467,14 +467,16 @@ void MainWindow::on_ircChat_serverCommMessage(const QString &s)
 
 void MainWindow::on_refreshButton_clicked()
 {
+    static const auto infoLabels = { ui->serverName, ui->serverHost, ui->serverLastUpdate };
+
     ui->serverTable->clearContents();
     ui->serverTable->setRowCount(0);
     gameServersShown.clear();
 
     clearTeamTables();
-    ui->serverName->setText("");
-    ui->serverHost->setText("");
-    ui->serverLastUpdate->setText("");
+
+    for (QLabel *l : infoLabels)
+        l->text().clear();
 
     ui->refreshButton->setEnabled(false);
     msv->query();
