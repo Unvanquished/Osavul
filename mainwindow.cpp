@@ -526,7 +526,7 @@ void MainWindow::connectTo(const QString &host)
 void MainWindow::on_syncButton_clicked()
 {
     if (!ui->serverTable->currentItem()) {
-        ui->statusBar->showMessage("No server selected!", TIMEOUT);
+        ui->statusBar->showMessage(tr("No server selected!"), TIMEOUT);
         return;
     }
 
