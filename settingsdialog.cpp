@@ -6,7 +6,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
-    ui->ircConnectOnStartupCheckBox->setChecked(settings.value("ircConnectOnStartup").toBool());
+    ui->ircConnectOnStartupCheckBox->setChecked(settings.value("irc/connectOnStartup").toBool());
     ui->daemonPathLineEdit->setText(settings.value("unv/clientExecutablePath").toString());
     ui->daemonPathLineEdit->adjustSize();
 }
