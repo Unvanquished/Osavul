@@ -16,7 +16,8 @@
  */
 
 #include "unv.h"
-#define OOB "\xff\xff\xff\xff"
+
+#define FFFF "\xff\xff\xff\xff"
 
 using namespace unv;
 
@@ -188,7 +189,7 @@ void GameServer::processOOB(QList<QByteArray> st)
     for (int i = 0; i < kvList.length(); i += 2)
         kvs.insert(kvList.at(i), kvList.at(i + 1));
 
-    if (Q_LIKELY(responseType == OOB "statusResponse")) {
+    if (Q_LIKELY(responseType == FFFF "statusResponse")) {
         info.name = kvs.value("sv_hostname", "unknown");
         info.mapname = kvs.value("mapname", "unknown");
         info.maxclients = kvs.value("sv_maxclients", 0).toInt();
@@ -221,7 +222,7 @@ void MasterServer::processOOB(QList<QByteArray> st) {
 
     QList<QByteArray> oob = st.takeFirst().split('\\');
 
-    if (oob.takeFirst() != OOB "getserversResponse")
+    if (oob.takeFirst() != FFFF "getserversResponse")
         Q_ASSERT(false);
 
     // deleting «EOT\0\0\0»
@@ -250,3 +251,5 @@ void MasterServer::onGameSvReady() {
 
     emit serverQueried(sv);
 }
+
+#undef FFFF

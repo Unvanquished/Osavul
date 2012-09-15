@@ -25,6 +25,8 @@
 #include <QtGui/QColor>
 #include <QtGui/QTextDocument> // for Qt::escape()
 
+#define FFFF "\xff\xff\xff\xff"
+
 namespace unv {
     class Server : public QObject
     {
@@ -89,7 +91,7 @@ namespace unv {
 
     public:
         GameServer(const QString &host, quint16 port)
-            : Server(host, port, "\xff\xff\xff\xffgetstatus"), info() { }
+            : Server(host, port, FFFF "getstatus"), info() { }
         ~GameServer() { }
 
         QString game() const { return info.game; }
@@ -131,8 +133,9 @@ namespace unv {
         Q_OBJECT
 
     public:
-        MasterServer(const QString &host = "unvanquished.net", quint16 port = 27950)
-            : Server(host, port, "\xff\xff\xff\xffgetservers 86 full empty") { }
+        MasterServer(const QString &host, quint16 port, quint16 protocol)
+            : Server(host, port, FFFF "getservers " % QByteArray::number(protocol) % " full empty")
+        { }
         ~MasterServer() { }
 
         const QList<GameServer *> &servers() { return gameServers; }
@@ -164,4 +167,5 @@ namespace unv {
 Q_DECLARE_METATYPE(unv::GameServer *)
 Q_DECLARE_METATYPE(unv::FavoriteEntry *)
 
+#undef FFFF
 #endif // UNV_H

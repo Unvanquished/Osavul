@@ -35,7 +35,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     chat = new IrcClient(this);
     chat->setObjectName("ircChat");
 
-    msv = new MasterServer();
+    msv = new MasterServer(settings.value("unv/masterServerAddress",
+                                          "unvanquished.net").toString(),
+                           settings.value("unv/masterServerPort",
+                                          27950).toUInt(),
+                           settings.value("unv/masterServerProtocol",
+                                          86).toUInt());
     msv->setParent(this);
     msv->setObjectName("masterServer");
 
