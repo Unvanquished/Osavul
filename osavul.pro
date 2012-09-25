@@ -39,6 +39,13 @@ TRANSLATIONS = osavul_ua.ts osavul_en_GB.ts
 
 QMAKE_CXXFLAGS += -std=c++0x -Wall
 
+macx {
+		QMAKE_CXXFLAGS += -stdlib=libc++
+		# Qt does not enable C++11 features for clang on OS X. Manually enable them
+		DEFINES += Q_COMPILER_INITIALIZER_LISTS
+		QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7
+}
+
 RESOURCES += osavul.qrc
 
 OTHER_FILES += \
