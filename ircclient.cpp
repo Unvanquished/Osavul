@@ -172,12 +172,10 @@ void IrcClient::receive()
 
         QByteArray rawLine;
 
-        if (buf.isEmpty()) {
+        if (buf.isEmpty())
             rawLine = sock.readLine();
-        } else {
-            rawLine = buf + sock.readLine();
-            buf.clear();
-        }
+        else
+            rawLine = buf + sock.readLine(), buf.clear();
 
         if (rawLine.startsWith("PING")) {
             sock.write("PONG " % rawLine.split(' ').last());
@@ -190,6 +188,8 @@ void IrcClient::receive()
         // no prefix ':' either
         if (in.startsWith(':'))
             in.remove(0, 1);
+
+                qDebug() << in;
 
         int last = in.indexOf(" :");
 
@@ -242,7 +242,7 @@ void IrcClient::receive()
             Channel *chan = channels.value(target == m_nickName ? IrcUtil::clean(peer) : target);
             QString s = out.arg(IrcUtil::coloredName(peer), what);
 
-            if (what.contains(m_nickName) || target == m_nickName) {
+            if (what.contains(m_nickName)) {
                 highlight(chan);
                 addStringToChannel(chan, "<span style='color: red'>" % s % "</span>");
             } else {

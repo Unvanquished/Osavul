@@ -300,6 +300,9 @@ void MainWindow::on_ircChat_addStringToChannel(Channel *channel, const QString &
 
 void MainWindow::on_ircChat_highlight(Channel *channel)
 {
+    if (ui->ircTabWidget->currentWidget() == channel)
+        return;
+
     int i = ui->ircTabWidget->indexOf(channel);
     QString tabText = ui->ircTabWidget->tabText(i);
     channel->setProperty("previousText", tabText);
