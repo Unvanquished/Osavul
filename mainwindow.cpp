@@ -450,7 +450,10 @@ void MainWindow::updateTeamTables(const QList<Player> &playerList, const QDateTi
             scoreItem->setData(Qt::EditRole, p.score());
             tbl->setItem(j, 0, scoreItem);
             QTableWidgetItem *pingItem = new QTableWidgetItem;
-            pingItem->setData(Qt::EditRole, p.ping());
+            if (p.isBot())
+                pingItem->setData(Qt::EditRole, tr("bot"));
+            else
+                pingItem->setData(Qt::EditRole, p.ping());
             tbl->setItem(j, 1, pingItem);
             QTableWidgetItem *nameItem = new QTableWidgetItem(p.name());
             tbl->setItem(j, 2, nameItem);
