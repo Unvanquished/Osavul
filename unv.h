@@ -64,9 +64,9 @@ namespace unv {
     public:
         enum Team {Spectators = 0, Aliens = 1, Humans = 2};
         Player(Team t = Spectators, const QString &name = "unknown",
-               qint16 score = 0, quint16 ping = 0)
+               qint16 score = 0, quint16 ping = 0, bool isBot = false)
             : m_team(t), m_name(name), m_plainName(QString(name).replace(QRegExp("<[^>]*>"), ""))
-            , m_score(score), m_ping(ping) { }
+            , m_score(score), m_ping(ping), m_bot(isBot) { }
 
         bool operator <(const Player &other) const { return m_score < other.score(); }
         bool operator >(const Player &other) const { return m_score > other.score(); }
@@ -76,6 +76,7 @@ namespace unv {
         const QString &plainName() const { return m_plainName; }
         qint16  score() const { return m_score; }
         quint16 ping() const  { return m_ping; }
+        bool    isBot() const { return m_bot; }
 
     private:
         Team m_team;
@@ -83,6 +84,7 @@ namespace unv {
         QString m_plainName;
         qint16  m_score;
         quint16 m_ping;
+        bool m_bot;
     };
 
     class GameServer : public Server
@@ -102,13 +104,15 @@ namespace unv {
         const QDateTime &lastUpdateTime() const { return m_lastUpdateTime; }
         bool isPure() const { return info.pure; }
 
+        int botCount() const;
+
         QString formattedAddress(const QString &fmt = "%1:%2") const;
         QString formattedClientCount(const QString &fmt = "[%1/%2]") const;
 
     private:
         Q_DISABLE_COPY(GameServer)
-        Player constructPlayer(Player::Team t, const QByteArray &entry);
-        void parseP(const QByteArray &pString, const QList<QByteArray> &p2);
+        Player constructPlayer(Player::Team t, const QByteArray &entry, bool isBot = false);
+        void parsePB(const QByteArray &pString, const QByteArray &bString, const QList<QByteArray> &p2);
 
         struct {
             QString game;

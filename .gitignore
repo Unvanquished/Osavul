@@ -30,3 +30,7 @@ ui_*.h
 debian/files
 debian/*.debhelper*
 debian/*.substvars
+
+# Mac specific files
+.DS_STORE
+osavul.app/*

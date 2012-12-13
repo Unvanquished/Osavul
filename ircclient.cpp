@@ -17,24 +17,32 @@
 
 #include "ircclient.h"
 
-#define IMPORTANT_MARKER "<span style='color: red'> ! </span>"
+#define RED(x) "<span style='color: red'>" x "</span>"
+#define IMPORTANT RED(" ! ")
 
 namespace IrcUtil {
-    QString clean(const QString &user)
+    QString &clean(const QString &user)
     {
         return user.split('!').first();
     }
 
+    QString colorize(const QString &color, QString &text)
+    {
+        static const QString open  = "<span style='color: %1'>";
+        static const QString close = "</span>";
+
+        return text.prepend(open.arg(color)).append(close);
+    }
+
     QString coloredName(const QString &peer)
     {
-        static const QString templ = "<span style='color: %1'>%2</span>";
         static const int colorsTotal = QColor::colorNames().length();
         static QHash<QString, QColor> peerColors;
 
         if (!peerColors.contains(peer))
             peerColors.insert(peer, QColor(QColor::colorNames().at(qrand() % colorsTotal)));
 
-        return templ.arg(peerColors.value(peer).name(), clean(peer));
+        return colorize(peerColors.value(peer).name(), clean(peer));
     }
 
     QString htmlized(const QString &message)
@@ -100,11 +108,11 @@ IrcClient::IrcClient(QObject *parent) : QObject(parent)
 
 void IrcClient::connectToHost(const QString &host, quint16 port)
 {
-    serverCommMessage(IMPORTANT_MARKER "Connecting...");
+    serverCommMessage(IMPORTANT "Connecting...");
     sock.connectToHost(host, port);
 
     if (!sock.waitForConnected()) {
-        serverCommMessage(IMPORTANT_MARKER "Connection failed!");
+        serverCommMessage("Connection failed!");
         sock.disconnectFromHost();
         sock.close();
     }
@@ -172,12 +180,10 @@ void IrcClient::receive()
 
         QByteArray rawLine;
 
-        if (buf.isEmpty()) {
+        if (buf.isEmpty())
             rawLine = sock.readLine();
-        } else {
-            rawLine = buf + sock.readLine();
-            buf.clear();
-        }
+        else
+            rawLine = buf + sock.readLine(), buf.clear();
 
         if (rawLine.startsWith("PING")) {
             sock.write("PONG " % rawLine.split(' ').last());
@@ -190,6 +196,8 @@ void IrcClient::receive()
         // no prefix ':' either
         if (in.startsWith(':'))
             in.remove(0, 1);
+
+                qDebug() << in;
 
         int last = in.indexOf(" :");
 
@@ -239,15 +247,30 @@ void IrcClient::receive()
             out = "(NOTICE from %1) %2";
 
         if (!out.isEmpty()) {
+            if (what.at(0) == '\001' && what.at(what.length() - 1) == '\001') {
+                // whoa, CTCP!
+                QStringRef ref = what.midRef(1, what.length() - 2);
+
+                if (ref == "VERSION")
+                    // WHAT TODO, qApp is inaccessible from non-GUI threads
+                    send(QString("NOTICE %1 :%2").arg(IrcUtil::clean(peer)).arg("Osavul!"));
+
+                continue;
+            }
+
             Channel *chan = channels.value(target == m_nickName ? IrcUtil::clean(peer) : target);
+
+            if (chan == nullptr) {
+                send(QString("PRIVMSG %1 :%2").arg(IrcUtil::clean(peer)).arg("hi"));
+                continue;
+            }
+
             QString s = out.arg(IrcUtil::coloredName(peer), what);
 
-            if (what.contains(m_nickName) || target == m_nickName) {
-                highlight(chan);
-                addStringToChannel(chan, "<span style='color: red'>" % s % "</span>");
-            } else {
+            if (what.contains(m_nickName))
+                highlight(chan), addStringToChannel(chan, IrcUtil::colorize("red", s));
+            else
                 addStringToChannel(chan, s);
-            }
         } else
             serverCommMessage(in);
     }
@@ -255,7 +278,7 @@ void IrcClient::receive()
 
 void IrcClient::die() {
     send("QUIT :Osavul closed");
-    serverCommMessage(IMPORTANT_MARKER "Disconnected.");
+    serverCommMessage(IMPORTANT "Disconnected.");
     sock.disconnectFromHost();
     sock.close();
 }

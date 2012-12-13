@@ -144,7 +144,7 @@ Server::~Server()
     sock.close();
 }
 
-Player GameServer::constructPlayer(Player::Team t, const QByteArray &entry)
+Player GameServer::constructPlayer(Player::Team t, const QByteArray &entry, bool isBot)
 {
     QList<QByteArray> ss = entry.left(entry.indexOf(" \"")).split(' ');
 
@@ -157,10 +157,10 @@ Player GameServer::constructPlayer(Player::Team t, const QByteArray &entry)
     // the order of evaluation in argument lists is undefined, so…
     auto score = ss.takeFirst().toInt();
     auto ping  = ss.takeFirst().toInt();
-    return Player(t, s, score, ping);
+    return Player(t, s, score, ping, isBot);
 }
 
-void GameServer::parseP(const QByteArray &pString, const QList<QByteArray> &pList)
+void GameServer::parsePB(const QByteArray &pString, const QByteArray &bString, const QList<QByteArray> &pList)
 {
     m_players.clear();
 
@@ -170,7 +170,7 @@ void GameServer::parseP(const QByteArray &pString, const QList<QByteArray> &pLis
         if (t == '-')
             continue;
         else if ((t - '0') >= 0 && (t - '0') <= 2)
-            m_players << constructPlayer(static_cast<Player::Team>(t - '0'), pList.at(j++));
+            m_players << constructPlayer(static_cast<Player::Team>(t - '0'), pList.at(j++), bString.at(i) == 'b');
         else
             Q_ASSERT(false);
     }
@@ -197,7 +197,7 @@ void GameServer::processOOB(QList<QByteArray> st)
         info.game = kvs.value("gamename", "base");
 
         if (!st.isEmpty() && !(st.first() == ""))
-            parseP(kvs.value("P", ""), st);
+            parsePB(kvs.value("P", ""), kvs.value("B", ""), st);
 
         m_lastUpdateTime = QDateTime::currentDateTime();
 
@@ -206,8 +206,29 @@ void GameServer::processOOB(QList<QByteArray> st)
     } else { Q_ASSERT(false); }
 }
 
+int GameServer::botCount() const
+{
+    int i, lim = m_players.length(), bots = 0;
+
+    for (i = 0; i < lim; ++i)
+        if (m_players[i].isBot())
+            ++bots;
+
+    return bots;
+}
+
 QString GameServer::formattedClientCount(const QString &fmt) const
 {
+    int bots = botCount();
+    QString arg1;
+
+    if (bots)
+    {
+        static const QString xfmt = "%1+%2";
+        arg1 = xfmt.arg(m_players.length() - bots).arg(bots);
+        return fmt.arg(arg1).arg(info.maxclients);
+    }
+
     return fmt.arg(m_players.length()).arg(info.maxclients);
 }
 

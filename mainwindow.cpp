@@ -300,6 +300,9 @@ void MainWindow::on_ircChat_addStringToChannel(Channel *channel, const QString &
 
 void MainWindow::on_ircChat_highlight(Channel *channel)
 {
+    if (ui->ircTabWidget->currentWidget() == channel)
+        return;
+
     int i = ui->ircTabWidget->indexOf(channel);
     QString tabText = ui->ircTabWidget->tabText(i);
     channel->setProperty("previousText", tabText);
@@ -447,7 +450,10 @@ void MainWindow::updateTeamTables(const QList<Player> &playerList, const QDateTi
             scoreItem->setData(Qt::EditRole, p.score());
             tbl->setItem(j, 0, scoreItem);
             QTableWidgetItem *pingItem = new QTableWidgetItem;
-            pingItem->setData(Qt::EditRole, p.ping());
+            if (p.isBot())
+                pingItem->setData(Qt::EditRole, tr("bot"));
+            else
+                pingItem->setData(Qt::EditRole, p.ping());
             tbl->setItem(j, 1, pingItem);
             QTableWidgetItem *nameItem = new QTableWidgetItem(p.name());
             tbl->setItem(j, 2, nameItem);
@@ -596,12 +602,28 @@ void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
     int playersFound = 0;
     int currentLength = arg1.length();
 
+    const auto directPredicate =   [&] (const QString &s) {
+        return s.contains(arg1, Qt::CaseInsensitive);
+    };
+    const auto negativePredicate = [&] (const QString &s) {
+        return !s.contains(arg1.right(arg1.size() - 1), Qt::CaseInsensitive);
+    };
+
+    static std::function<bool (const QString &)> pred;
+
+    bool negSearch;
+    if ((negSearch = arg1.startsWith('!', Qt::CaseInsensitive)))
+        pred = negativePredicate;
+    else
+        pred = directPredicate;
+
     // all of collection, generalization and filtering are O(n²), but filtering is made over a
     // smaller dataset. not a problem just yet, seeing as premature optimization is the root of all
     // evil™.
 
     if ((currentLength == 1 && previousLength == 0) // entering first letter
-        || (currentLength < previousLength)) { // initial collection or generalization
+        || (currentLength < previousLength)
+        || negSearch) { // initial collection or generalization
         ui->playerTreeWidget->clear();
         for (const GameServer *sv : msv->servers()) {
 
@@ -612,12 +634,15 @@ void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
             svItem->setText(0, sv->name());
 
             for (const Player &p : sv->players()) {
-                if (p.plainName().contains(arg1, Qt::CaseInsensitive)) {
+                if (pred(p.plainName())) {
                     auto pItem = new QTreeWidgetItem(svItem);
                     pItem->setText(0, p.name());
                     pItem->setData(0, Qt::UserRole, p.plainName());
                 }
             }
+
+            if (svItem->childCount() == 0)
+                    delete svItem;
 
             playersFound += svItem->childCount();
         }
@@ -630,18 +655,14 @@ void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
             for (int j = 0; j < parent->childCount(); ++j) {
                 QString name = parent->child(j)->data(0, Qt::UserRole).toString();
 
-                if (!name.contains(arg1, Qt::CaseInsensitive)) {
-                    delete parent->takeChild(j);
-                    --j;
-                }
+                if (!name.contains(arg1, Qt::CaseInsensitive))
+                    delete parent->takeChild(j), --j;
             }
 
-            if (parent->childCount() == 0) {
-                delete ui->playerTreeWidget->takeTopLevelItem(i);
-                --i;
-            } else {
+            if (parent->childCount() == 0)
+                delete ui->playerTreeWidget->takeTopLevelItem(i), --i;
+            else
                 playersFound += parent->childCount();
-            }
         }
     }
 
