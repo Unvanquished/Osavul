@@ -163,6 +163,7 @@ Player GameServer::constructPlayer(Player::Team t, const QByteArray &entry, bool
 void GameServer::parsePB(const QByteArray &pString, const QByteArray &bString, const QList<QByteArray> &pList)
 {
     m_players.clear();
+    bool bDefined = bString.size() != 0;
 
     for (int i = 0, j = 0; i < pString.size(); ++i) {
         int t = pString.at(i);
@@ -170,7 +171,7 @@ void GameServer::parsePB(const QByteArray &pString, const QByteArray &bString, c
         if (t == '-')
             continue;
         else if ((t - '0') >= 0 && (t - '0') <= 2)
-            m_players << constructPlayer(static_cast<Player::Team>(t - '0'), pList.at(j++), bString.at(i) == 'b');
+            m_players << constructPlayer(static_cast<Player::Team>(t - '0'), pList.at(j++), bDefined && bString.at(i) == 'b');
         else
             Q_ASSERT(false);
     }
