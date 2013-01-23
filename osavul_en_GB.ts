@@ -53,24 +53,57 @@
     </message>
 </context>
 <context>
+    <name>FavoritesDialog</name>
+    <message>
+        <location filename="favoritesdialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="favoritesdialog.ui" line="30"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="favoritesdialog.ui" line="35"/>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="favoritesdialog.ui" line="40"/>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="favoritesdialog.ui" line="58"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="favoritesdialog.ui" line="63"/>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>IrcClient</name>
     <message>
-        <location filename="ircclient.cpp" line="212"/>
+        <location filename="ircclient.cpp" line="230"/>
         <source>%1 has joined %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ircclient.cpp" line="214"/>
+        <location filename="ircclient.cpp" line="232"/>
         <source>%1 has left %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ircclient.cpp" line="216"/>
+        <location filename="ircclient.cpp" line="234"/>
         <source>%1 is now known as %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ircclient.cpp" line="218"/>
+        <location filename="ircclient.cpp" line="236"/>
         <source>%1 has quit [%2]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -94,6 +127,7 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="104"/>
+        <location filename="mainwindow.ui" line="564"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -104,8 +138,8 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="120"/>
-        <location filename="mainwindow.ui" line="320"/>
-        <location filename="mainwindow.ui" line="387"/>
+        <location filename="mainwindow.ui" line="334"/>
+        <location filename="mainwindow.ui" line="401"/>
         <source>Ping</source>
         <translation type="unfinished"></translation>
     </message>
@@ -120,227 +154,279 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="220"/>
+        <location filename="mainwindow.ui" line="234"/>
         <source>&amp;Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="239"/>
+        <location filename="mainwindow.ui" line="253"/>
         <source>&amp;Join Current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="252"/>
+        <location filename="mainwindow.ui" line="266"/>
         <source>&amp;Sync Current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="315"/>
-        <location filename="mainwindow.ui" line="382"/>
+        <location filename="mainwindow.ui" line="329"/>
+        <location filename="mainwindow.ui" line="396"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="325"/>
+        <location filename="mainwindow.ui" line="339"/>
         <source>Humans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="392"/>
+        <location filename="mainwindow.ui" line="406"/>
         <source>Aliens</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="408"/>
+        <location filename="mainwindow.ui" line="422"/>
         <source>Spectators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="446"/>
+        <location filename="mainwindow.ui" line="460"/>
         <source>Show Spectators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="473"/>
+        <location filename="mainwindow.ui" line="487"/>
         <source>&amp;Players</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="483"/>
+        <location filename="mainwindow.ui" line="497"/>
         <source>&amp;Filter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="516"/>
+        <location filename="mainwindow.ui" line="530"/>
+        <source>Clan &amp;List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="569"/>
+        <source>Tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="574"/>
+        <source>IRC channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="579"/>
+        <source>URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="588"/>
         <source>&amp;Chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="544"/>
+        <location filename="mainwindow.ui" line="616"/>
         <source>Server Co&amp;mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="554"/>
-        <location filename="mainwindow.cpp" line="194"/>
+        <location filename="mainwindow.ui" line="626"/>
+        <location filename="mainwindow.cpp" line="365"/>
         <source>C&amp;onnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="mainwindow.ui" line="567"/>
+        <location filename="mainwindow.ui" line="639"/>
         <source>&amp;Join Channel…</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="mainwindow.ui" line="577"/>
+        <location filename="mainwindow.ui" line="649"/>
         <source>Change &amp;Nick…</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="mainwindow.ui" line="587"/>
+        <location filename="mainwindow.ui" line="659"/>
         <source>&amp;Query User…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="641"/>
-        <location filename="mainwindow.cpp" line="151"/>
+        <location filename="mainwindow.ui" line="713"/>
+        <location filename="mainwindow.cpp" line="322"/>
         <source>Osavul</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="649"/>
+        <location filename="mainwindow.ui" line="721"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="668"/>
+        <location filename="mainwindow.ui" line="731"/>
+        <source>Favorites</source>
+        <translation>Favourites</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="751"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="673"/>
+        <location filename="mainwindow.ui" line="756"/>
         <source>Restore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="678"/>
+        <location filename="mainwindow.ui" line="761"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="681"/>
+        <location filename="mainwindow.ui" line="764"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="686"/>
-        <location filename="mainwindow.ui" line="689"/>
+        <location filename="mainwindow.ui" line="769"/>
+        <location filename="mainwindow.ui" line="772"/>
         <source>Add to Favorites</source>
         <translation>Add to Favourites</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="692"/>
+        <location filename="mainwindow.ui" line="775"/>
         <source>Alt+F</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="697"/>
+        <location filename="mainwindow.ui" line="780"/>
         <source>User&apos;s Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="702"/>
-        <location filename="mainwindow.cpp" line="571"/>
+        <location filename="mainwindow.ui" line="785"/>
+        <location filename="mainwindow.cpp" line="797"/>
         <source>About Osavul</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="707"/>
+        <location filename="mainwindow.ui" line="790"/>
         <source>About Qt</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="mainwindow.cpp" line="44"/>
-        <source>Favorite servers</source>
-        <translation>Favourite servers</translation>
+    <message utf8="true">
+        <location filename="mainwindow.ui" line="795"/>
+        <source>Manage Favorites…</source>
+        <translation>Manage Favourites…</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="51"/>
+        <source>Favorite servers</source>
+        <translation type="obsolete">Favourite servers</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="61"/>
         <source>Osavul, the Unvanquished server browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="152"/>
+        <location filename="mainwindow.cpp" line="323"/>
         <source>Osavul will keep running in the system tray. To terminate the program, choose &lt;b&gt;Quit&lt;/b&gt; in the context menu of the system tray entry.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="157"/>
+        <location filename="mainwindow.cpp" line="130"/>
+        <location filename="mainwindow.cpp" line="328"/>
         <source>Do not show again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="187"/>
+        <location filename="mainwindow.cpp" line="124"/>
+        <source>Systray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="125"/>
+        <source>Osavul could not detect any system tray on this system. Systray support will be disabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="358"/>
         <source>Disc&amp;onnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="204"/>
+        <location filename="mainwindow.cpp" line="375"/>
         <source>%1 servers queried</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="319"/>
-        <source>No server selected!</source>
+        <location filename="mainwindow.cpp" line="454"/>
+        <source>bot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="332"/>
-        <source>Launching Unvanquished...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="335"/>
-        <source>Daemon failed to start!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="398"/>
-        <source>Found %1 players on %2 servers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="472"/>
-        <source>Join Channel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="473"/>
-        <source>Channel:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="496"/>
-        <source>Change Nickname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="497"/>
-        <source>New Nickname:</source>
+        <location filename="mainwindow.cpp" line="469"/>
+        <source>&apos;Last update: &apos;dddd hh:mm:ss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="512"/>
+        <location filename="mainwindow.cpp" line="542"/>
+        <location filename="mainwindow.cpp" line="768"/>
+        <source>No server selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="526"/>
+        <source>Launching Unvanquished...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="536"/>
+        <source>Daemon failed to start!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="600"/>
+        <source>Found %1 players on %2 servers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="689"/>
+        <source>Join Channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="690"/>
+        <source>Channel:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="715"/>
+        <source>Change Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="716"/>
+        <source>New Nickname:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="731"/>
         <source>Query User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="513"/>
+        <location filename="mainwindow.cpp" line="732"/>
         <source>Username:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="572"/>
+        <location filename="mainwindow.cpp" line="798"/>
         <source>&lt;h3&gt;About Osavul&lt;/h3&gt;&lt;p&gt;Osavul is a server browser application meant specifically for querying Unvanquished servers.&lt;/p&gt;&lt;p&gt;Osavul uses C++ with Qt, a cross-platform widget toolkit. You can read more about it in the &quot;About Qt&quot; dialog by choosing the respective option in the &quot;Help&quot; menu.&lt;/p&gt;&lt;p&gt;Osavul is licensed under the GNU General Public License version 3.&lt;/p&gt;&lt;p&gt;(C) Qrntz 2012&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -350,7 +436,7 @@
     <message>
         <location filename="settingsdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialogue</translation>
     </message>
     <message>
         <location filename="settingsdialog.ui" line="20"/>
@@ -360,6 +446,41 @@
     <message>
         <location filename="settingsdialog.ui" line="29"/>
         <source>&amp;Path to Daemon:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.ui" line="39"/>
+        <source>/usr/games/bin/unvanquished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.ui" line="46"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.ui" line="55"/>
+        <source>I know what I&apos;m doing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.ui" line="67"/>
+        <source>P&amp;rotocol:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.ui" line="103"/>
+        <source>&amp;Master server:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.ui" line="116"/>
+        <source>unvanquished.net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settingsdialog.ui" line="129"/>
+        <source>Port:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
