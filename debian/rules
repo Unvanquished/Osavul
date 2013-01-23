@@ -9,5 +9,14 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+lrelease:
+	lrelease-qt4 osavul.pro
+
+override_dh_auto_build: lrelease
+
+clean:
+	-rm -f *.qm
+	dh clean
+
 %:
 	dh $@ --parallel
