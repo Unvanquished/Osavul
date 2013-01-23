@@ -15,6 +15,8 @@
 * along with Osavul.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QLibraryInfo>
+#include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 
@@ -28,6 +30,26 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("0.1alpha");
     QApplication::setWindowIcon(QIcon(":images/unvanquished_tray_icon.png"));
     QApplication::setQuitOnLastWindowClosed(false);
+
+    QString locale = QLocale::system().name();
+    QString localeBase = locale.split("_")[0];
+
+    // load stock translations
+    QTranslator qtTranslator;
+    QString path = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+
+    if (!qtTranslator.load("qt_" + locale, path)) {
+        qtTranslator.load("qt_" + localeBase, path);
+    }
+    a.installTranslator(&qtTranslator);
+
+    // load Osavul's own translations
+    QTranslator aTranslator;
+
+    if (!aTranslator.load("osavul_" + locale)) {
+        aTranslator.load("osavul_" + localeBase);
+    }
+    a.installTranslator(&aTranslator);
 
     MainWindow w;
     w.setWindowTitle("Osavul");
