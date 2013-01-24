@@ -17,6 +17,7 @@
 
 #include <QtCore/QLibraryInfo>
 #include <QtCore/QTranslator>
+#include <QtCore/QTextCodec>
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 
@@ -50,6 +51,8 @@ int main(int argc, char *argv[])
         aTranslator.load("osavul_" + localeBase);
     }
     a.installTranslator(&aTranslator);
+
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
     MainWindow w;
     w.setWindowTitle("Osavul");
