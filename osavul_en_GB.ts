@@ -358,10 +358,13 @@
         <source>Disc&amp;onnect</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="mainwindow.cpp" line="375"/>
-        <source>%1 servers queried</source>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location filename="mainwindow.cpp" line="417"/>
+        <source>%n server(s) queried</source>
+        <translation type="unfinished">
+            <numerusform>%n server queried</numerusform>
+            <numerusform>%n servers queried</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="454"/>
@@ -390,10 +393,23 @@
         <source>Daemon failed to start!</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="mainwindow.cpp" line="600"/>
-        <source>Found %1 players on %2 servers</source>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location filename="mainwindow.cpp" line="675"/>
+        <source>Found %n player(s) </source>
+        <comment>Found &lt;x&gt; players on &lt;y&gt; servers [split as needed, one number each]</comment>
+        <translation type="unfinished">
+            <numerusform>Found %n player </numerusform>
+            <numerusform>Found %n players </numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="mainwindow.cpp" line="676"/>
+        <source>on %n server(s)</source>
+        <comment>Found &lt;x&gt; players on &lt;y&gt; servers [split as needed, one number each]</comment>
+        <translation type="unfinished">
+            <numerusform>on %n server</numerusform>
+            <numerusform>on %n servers</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="689"/>
