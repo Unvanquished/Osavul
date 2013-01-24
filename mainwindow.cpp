@@ -802,7 +802,7 @@ void MainWindow::on_actionAbout_Osavul_triggered()
                        "more about it in the \"About Qt\" dialog by choosing the respective option "
                        "in the \"Help\" menu.</p>"
                        "<p>Osavul is licensed under the GNU General Public License version 3.</p>"
-                       "<p>(C) Qrntz 2012</p>"));
+                       "<p>© Qrntz 2012</p>"));
 }
 
 void MainWindow::on_actionAbout_Qt_triggered()
