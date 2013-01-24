@@ -21,12 +21,12 @@
 #define IMPORTANT RED(" ! ")
 
 namespace IrcUtil {
-    QString &clean(const QString &user)
+    QString clean(const QString &user)
     {
         return user.split('!').first();
     }
 
-    QString colorize(const QString &color, QString &text)
+    QString colorize(const QString &color, QString text)
     {
         static const QString open  = "<span style='color: %1'>";
         static const QString close = "</span>";
