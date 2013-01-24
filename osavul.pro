@@ -10,6 +10,10 @@ TARGET = osavul
 TEMPLATE = app
 CONFIG += qt debug
 
+CODECFORTR = UTF-8
+CODECFORSRC = UTF-8
+
+
 SOURCES += main.cpp\
     mainwindow.cpp \
     connectiondialog.cpp \

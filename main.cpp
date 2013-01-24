@@ -52,7 +52,9 @@ int main(int argc, char *argv[])
     }
     a.installTranslator(&aTranslator);
 
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    QTextCodec *utf = QTextCodec::codecForName("UTF-8");
+    QTextCodec::setCodecForCStrings(utf);
+    QTextCodec::setCodecForTr(utf);
 
     MainWindow w;
     w.setWindowTitle("Osavul");
