@@ -57,7 +57,7 @@
     <message>
         <location filename="favoritesdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dialogue</translation>
     </message>
     <message>
         <location filename="favoritesdialog.ui" line="30"/>
@@ -428,7 +428,7 @@
     <message>
         <location filename="mainwindow.cpp" line="798"/>
         <source>&lt;h3&gt;About Osavul&lt;/h3&gt;&lt;p&gt;Osavul is a server browser application meant specifically for querying Unvanquished servers.&lt;/p&gt;&lt;p&gt;Osavul uses C++ with Qt, a cross-platform widget toolkit. You can read more about it in the &quot;About Qt&quot; dialog by choosing the respective option in the &quot;Help&quot; menu.&lt;/p&gt;&lt;p&gt;Osavul is licensed under the GNU General Public License version 3.&lt;/p&gt;&lt;p&gt;(C) Qrntz 2012&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;About Osavul&lt;/h3&gt;&lt;p&gt;Osavul is a server browser application meant specifically for querying Unvanquished servers.&lt;/p&gt;&lt;p&gt;Osavul uses C++ with Qt, a cross-platform widget toolkit. You can read more about it in the &quot;About Qt&quot; dialogue box by choosing the respective option in the &quot;Help&quot; menu.&lt;/p&gt;&lt;p&gt;Osavul is licensed under the GNU General Public License version 3.&lt;/p&gt;&lt;p&gt;(C) Qrntz 2012&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
