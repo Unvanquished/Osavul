@@ -1,3 +1,9 @@
+osavul (1.0.0+20130128-1) unstable; urgency=low
+
+  * Git snapshot (8573b7a).
+
+ -- Darren Salt <devspam@moreofthesa.me.uk>  Mon, 28 Jan 2013 22:25:43 +0000
+
 osavul (1.0.0+20121213+git87d5331-1) unstable; urgency=low
 
   * Git snapshot.
