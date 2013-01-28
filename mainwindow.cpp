@@ -372,7 +372,6 @@ void MainWindow::on_ircConnectButton_clicked()
 void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
 {
     using namespace unv;
-    static const QString templ = tr("%1 servers queried");
 
     bool isNew = true;
 
@@ -413,8 +412,10 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
     ui->serverTable->resizeColumnsToContents();
     ui->serverTable->horizontalHeader()->setStretchLastSection(true);
 
-    if (!ui->refreshButton->isEnabled())
-        ui->statusBar->showMessage(templ.arg(ui->serverTable->rowCount()), TIMEOUT);
+    if (!ui->refreshButton->isEnabled()) {
+        int count = ui->serverTable->rowCount();
+        ui->statusBar->showMessage(tr("%n server(s) queried", "", count), TIMEOUT);
+    }
 }
 
 void MainWindow::clearTeamTables()
@@ -597,7 +598,6 @@ void MainWindow::on_showSpectatorsButton_clicked(bool checked)
 
 void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
 {
-    static const QString templ = tr("Found %1 players on %2 servers");
     static int previousLength;
     int playersFound = 0;
     int currentLength = arg1.length();
@@ -666,10 +666,10 @@ void MainWindow::on_playerFilterLineEdit_textEdited(const QString &arg1)
         }
     }
 
-    ui->statusBar->showMessage(templ
-                               .arg(playersFound)
-                               .arg(ui->playerTreeWidget->topLevelItemCount()),
-                               TIMEOUT);
+    int serversFound = ui->playerTreeWidget->topLevelItemCount();
+    QString msg = tr("Found %n player(s) ", "Found <x> players on <y> servers [split as needed, one number each]", playersFound)
+                + tr("on %n server(s)", "Found <x> players on <y> servers [split as needed, one number each]", serversFound);
+    ui->statusBar->showMessage(msg, TIMEOUT);
 
     previousLength = currentLength;
 }
@@ -802,7 +802,7 @@ void MainWindow::on_actionAbout_Osavul_triggered()
                        "more about it in the \"About Qt\" dialog by choosing the respective option "
                        "in the \"Help\" menu.</p>"
                        "<p>Osavul is licensed under the GNU General Public License version 3.</p>"
-                       "<p>(C) Qrntz 2012</p>"));
+                       "<p>© Qrntz 2012</p>"));
 }
 
 void MainWindow::on_actionAbout_Qt_triggered()

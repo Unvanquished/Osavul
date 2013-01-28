@@ -12,6 +12,9 @@ osavul
 *.la
 *.a
 
+# Compiled Translations
+*.qm
+
 # User-specific project files
 *.user
 

@@ -25,7 +25,7 @@
 #include <QtGui/QTextDocument> // for Qt::escape()
 
 namespace IrcUtil {
-    QString &clean(const QString &user);
+    QString clean(const QString &user);
     QString coloredName(const QString &peer);
     QString htmlized(const QString &message);
 }
