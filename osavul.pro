@@ -41,7 +41,9 @@ FORMS += mainwindow.ui \
 
 TRANSLATIONS = osavul_ua.ts osavul_en_GB.ts
 
-QMAKE_CXXFLAGS += -std=c++0x -Wall
+DUMMY = $$system(lrelease $$TRANSLATIONS 2>/dev/null)
+
+QMAKE_CXXFLAGS += -std=c++0x -Wall \$\(EXTRA_CXXFLAGS\)
 
 macx {
 		QMAKE_CXXFLAGS += -stdlib=libc++

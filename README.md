@@ -16,3 +16,9 @@ qmake -spec unsupported/macx-clang
 lrelease osavul.pro
 make
 ```
+
+If you need to hard-code a path for the translation files, pass
+```
+EXTRA_CXXFLAGS='-DTRANSLATIONS_DIR="/path/to/translations"'
+```
+(with the path suitably replaced) to make.

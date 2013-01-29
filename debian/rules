@@ -9,10 +9,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-lrelease:
-	lrelease-qt4 osavul.pro
-
-override_dh_auto_build: lrelease
+export EXTRA_CXXFLAGS = '-DTRANSLATIONS_DIR="/usr/share/osavul"'
 
 clean:
 	-rm -f *.qm

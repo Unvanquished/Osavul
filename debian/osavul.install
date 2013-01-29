@@ -1,3 +1,3 @@
 osavul			usr/games
-osavul_*.qm		usr/share/qt4/translations
+osavul_*.qm		usr/share/osavul
 debian/osavul.desktop	usr/share/applications

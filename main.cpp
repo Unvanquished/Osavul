@@ -46,9 +46,15 @@ int main(int argc, char *argv[])
 
     // load Osavul's own translations
     QTranslator aTranslator;
-
-    if (!aTranslator.load("osavul_" + locale)) {
-        aTranslator.load("osavul_" + localeBase);
+#ifdef TRANSLATIONS_DIR
+    // first, install path
+    path = TRANSLATIONS_DIR;
+    if (!aTranslator.load("osavul_" + locale, path) && !aTranslator.load("osavul_" + localeBase, path))
+#endif
+    {
+        // second, binary path
+        path = QDir(a.applicationDirPath()).absolutePath();
+        if (!aTranslator.load("osavul_" + locale, path) && !aTranslator.load("osavul_" + localeBase, path)) {}
     }
     a.installTranslator(&aTranslator);
 
