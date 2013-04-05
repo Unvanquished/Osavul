@@ -33,6 +33,7 @@ namespace unv {
         Q_OBJECT
 
     public:
+        Server(const QHostAddress &host, quint16 port, const QByteArray &queryMessage);
         Server(const QString &host, quint16 port, const QByteArray &queryMessage);
 
         QString host() const { return sock.peerName(); }
@@ -92,6 +93,8 @@ namespace unv {
         Q_OBJECT
 
     public:
+        GameServer(const QHostAddress &host, quint16 port)
+            : Server(host, port, FFFF "getstatus"), info() { }
         GameServer(const QString &host, quint16 port)
             : Server(host, port, FFFF "getstatus"), info() { }
         ~GameServer() { }
@@ -138,7 +141,7 @@ namespace unv {
 
     public:
         MasterServer(const QString &host, quint16 port, quint16 protocol)
-            : Server(host, port, FFFF "getservers " % QByteArray::number(protocol) % " full empty")
+            : Server(host, port, FFFF "getserversExt UNVANQUISHED " % QByteArray::number(protocol) % " full empty")
         { }
         ~MasterServer() { }
 

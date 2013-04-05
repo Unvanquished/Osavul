@@ -103,6 +103,16 @@ void htmlColorize(QString &s)
         s.append(closeTag), --k;
 }
 
+Server::Server(const QHostAddress &host, quint16 port, const QByteArray &queryMessage = "")
+    : m_queryMessage(queryMessage)
+{
+    connect(&sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
+    sock.connectToHost(host, port);
+
+    if (!sock.waitForConnected())
+        return;
+}
+
 Server::Server(const QString &host, quint16 port, const QByteArray &queryMessage = "")
     : m_queryMessage(queryMessage)
 {
@@ -242,25 +252,78 @@ void MasterServer::processOOB(QList<QByteArray> st) {
     if (st.length() != 1)
         Q_ASSERT(false);
 
-    QList<QByteArray> oob = st.takeFirst().split('\\');
+    QByteArray oob = st.takeFirst();
 
-    if (oob.takeFirst() != FFFF "getserversResponse")
+    int index;
+    bool extended = false;
+    const int length = oob.length();
+
+    if (length > 22 && oob.mid(0, 22) == FFFF "getserversResponse" && oob.at(22) == 0)
+    {
+        index = 23;
+        gameServers.clear();
+    }
+    else if (length > 25 && oob.mid(0, 25) == FFFF "getserversExtResponse\0" && oob.at(25) == 0)
+    {
+        index = 26;
+        extended = true;
+        if ( oob.mid(26).toInt() == 1)
+            gameServers.clear();
+    }
+    else
         Q_ASSERT(false);
 
-    // deleting «EOT\0\0\0»
-    oob.removeLast();
+    while (index < length)
+    {
+        char c = oob.at(index);
+        if (c == '\\' || (extended && c == '/'))
+            break;
+        ++index;
+    }
 
-    gameServers.clear();
+    while (index < length)
+    {
+        union {
+            quint32 v4;
+            quint8  v6[16];
+        } ip;
+        quint16 port;
+        bool isv6;
 
-    for (auto s : oob) {
-        quint32 ip = 0;
+        switch (oob.at(index++))
+        {
+            case '\\':
+                if (index + 6 > length)
+                    return;
+                ip.v4 = 0;
 
-        for (int j = 0, k = 24; j < 4; ++j, k -= 8)
-            ip |= static_cast<quint8>(s.at(j)) << k;
+                for (int j = 0; j < 4; ++j)
+                    ip.v4 |= static_cast<quint8>(oob.at(index++)) << (24 - j * 8);
+                isv6 = false;
+                break;
 
-        quint16 port = (s.at(4) << 8) + s.at(5);
+            case '/':
+                if (!extended)
+                    return; // rest is invalid unless response is extended-mode
+                if (index + 18 > length)
+                    return;
 
-        GameServer *sv = new GameServer(QHostAddress(ip).toString(), port);
+                memcpy(ip.v6, oob.data() + index, 16);
+                index += 16;
+                isv6 = true;
+                break;
+
+            default: // invalid
+                return;
+        }
+
+
+        port = (oob.at(index) << 8) + oob.at(index + 1);
+        index += 2;
+
+        GameServer *sv = isv6
+                       ? new GameServer(QHostAddress(ip.v6), port)
+                       : new GameServer(QHostAddress(ip.v4), port);
         gameServers << sv;
         connect(sv, SIGNAL(ready()), this, SLOT(onGameSvReady()));
         sv->query();
