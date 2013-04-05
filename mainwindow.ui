@@ -109,6 +109,14 @@
               </column>
               <column>
                <property name="text">
+                <string>UDP</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
                 <string>Map</string>
                </property>
                <property name="textAlignment">

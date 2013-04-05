@@ -109,6 +109,8 @@ Server::Server(const QHostAddress &host, quint16 port, const QByteArray &queryMe
     connect(&sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
     sock.connectToHost(host, port);
 
+    m_ipv6 = host.protocol() == QAbstractSocket::IPv6Protocol;
+
     if (!sock.waitForConnected())
         return;
 }
@@ -118,6 +120,8 @@ Server::Server(const QString &host, quint16 port, const QByteArray &queryMessage
 {
     connect(&sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
     sock.connectToHost(host, port);
+
+    m_ipv6 = sock.peerAddress().protocol() == QAbstractSocket::IPv6Protocol;
 
     if (!sock.waitForConnected())
         return;

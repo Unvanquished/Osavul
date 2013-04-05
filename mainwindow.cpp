@@ -385,14 +385,22 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
 
     QList<QTableWidgetItem *> items;
 
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 6; ++i)
         items << (isNew ? new QTableWidgetItem : ui->serverTable->item(k, i));
+
+    bool ipv6 = sv->ipv6();
 
     items.at(0)->setText(sv->game());
     items.at(1)->setText(sv->name());
-    items.at(2)->setText(sv->map());
-    items.at(3)->setData(Qt::EditRole, sv->ping());
-    items.at(4)->setText(sv->formattedClientCount());
+    items.at(2)->setText(ipv6 ? "v6" : "v4");
+    items.at(3)->setText(sv->map());
+    items.at(4)->setData(Qt::EditRole, sv->ping());
+    items.at(5)->setText(sv->formattedClientCount());
+
+    QFont udp_font = items.at(2)->font();
+    udp_font.setBold(ipv6);
+    udp_font.setItalic(ipv6);
+    items.at(2)->setFont(udp_font);
 
     if (isNew) {
         QVariant svv = QVariant::fromValue<GameServer *>(sv);

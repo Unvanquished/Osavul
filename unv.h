@@ -39,6 +39,7 @@ namespace unv {
         QString host() const { return sock.peerName(); }
         quint16 port() const { return sock.peerPort(); }
         quint16 ping() const { return m_ping; }
+        bool    ipv6() const { return m_ipv6; }
 
         const QString &infoString() const { return m_infoString; }
 
@@ -53,6 +54,7 @@ namespace unv {
 
     private:
         QString m_infoString;
+        bool m_ipv6;
 
     public slots:
         void query();
