@@ -1,3 +1,12 @@
+osavul (1.0.0+20130128-3) unstable; urgency=low
+
+  * Add IPv6 support.
+    - This requires a master server which understands getserversExt.
+      (https://github.com/Unvanquished/unvanquished-master is one such.)
+    - Show whether a server is v4 or v6.
+
+ -- Darren Salt <devspam@moreofthesa.me.uk>  Fri, 05 Apr 2013 19:17:20 +0100
+
 osavul (1.0.0+20130128-2) unstable; urgency=low
 
   * Tell osavul where to look for its own translations.
