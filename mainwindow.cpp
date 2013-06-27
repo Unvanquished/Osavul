@@ -814,8 +814,8 @@ void MainWindow::on_actionAbout_Osavul_triggered()
                        "<p>Osavul uses C++ with Qt, a cross-platform widget toolkit. You can read "
                        "more about it in the \"About Qt\" dialog by choosing the respective option "
                        "in the \"Help\" menu.</p>"
-                       "<p>Osavul is licensed under the GNU General Public License version 3.</p>"
-                       "<p>© Qrntz 2012</p>"));
+                       "<p>Osavul is licensed under the GNU General Public License version 3.</p>")
+                       + "<p>© Qrntz 2012, Unvanquished Developers 2012-2013</p>");
 }
 
 void MainWindow::on_actionAbout_Qt_triggered()

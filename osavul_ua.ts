@@ -470,8 +470,8 @@
     </message>
     <message>
         <location filename="mainwindow.cpp" line="798"/>
-        <source>&lt;h3&gt;About Osavul&lt;/h3&gt;&lt;p&gt;Osavul is a server browser application meant specifically for querying Unvanquished servers.&lt;/p&gt;&lt;p&gt;Osavul uses C++ with Qt, a cross-platform widget toolkit. You can read more about it in the &quot;About Qt&quot; dialog by choosing the respective option in the &quot;Help&quot; menu.&lt;/p&gt;&lt;p&gt;Osavul is licensed under the GNU General Public License version 3.&lt;/p&gt;&lt;p&gt;(C) Qrntz 2012&lt;/p&gt;</source>
-        <translation>&lt;h3&gt;Про Osavul&lt;/h3&gt;&lt;p&gt;Osavul є застосунком для опитування та переглядання серверів Unvanquished.&lt;/p&gt;&lt;p&gt;Osavul використовує C++ та Qt, багатоплатформову бібліотеку віджетів. Ви можете дізнатися про неї більше у діалозі «Про Qt», який можна викликати з відповідного пункту у меню «Довідка».&lt;/p&gt;&lt;p&gt;Osavul ліцензовано під умовами Загальної Громадської Ліцензії GNU (GPL) версії 3.&lt;/p&gt;&lt;p&gt;© Qrntz 2012&lt;/p&gt;</translation>
+        <source>&lt;h3&gt;About Osavul&lt;/h3&gt;&lt;p&gt;Osavul is a server browser application meant specifically for querying Unvanquished servers.&lt;/p&gt;&lt;p&gt;Osavul uses C++ with Qt, a cross-platform widget toolkit. You can read more about it in the &quot;About Qt&quot; dialog by choosing the respective option in the &quot;Help&quot; menu.&lt;/p&gt;&lt;p&gt;Osavul is licensed under the GNU General Public License version 3.&lt;/p&gt;</source>
+        <translation>&lt;h3&gt;Про Osavul&lt;/h3&gt;&lt;p&gt;Osavul є застосунком для опитування та переглядання серверів Unvanquished.&lt;/p&gt;&lt;p&gt;Osavul використовує C++ та Qt, багатоплатформову бібліотеку віджетів. Ви можете дізнатися про неї більше у діалозі «Про Qt», який можна викликати з відповідного пункту у меню «Довідка».&lt;/p&gt;&lt;p&gt;Osavul ліцензовано під умовами Загальної Громадської Ліцензії GNU (GPL) версії 3.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Disconnect</source>
