@@ -375,6 +375,9 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
 
     bool isNew = true;
 
+    bool sorting = ui->serverTable->isSortingEnabled();
+    ui->serverTable->setSortingEnabled(false);
+
     if (gameServersShown.keys().contains(sv))
         isNew = false;
 
@@ -424,6 +427,8 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
         int count = ui->serverTable->rowCount();
         ui->statusBar->showMessage(tr("%n server(s) queried", "", count), TIMEOUT);
     }
+
+    ui->serverTable->setSortingEnabled(sorting);
 }
 
 void MainWindow::clearTeamTables()
