@@ -62,6 +62,7 @@ private slots:
     void enableSyncButton();
     void on_joinButton_clicked();
     void on_syncButton_clicked();
+    void on_statsButton_clicked();
     void on_serverTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *);
 
     void on_actionRestore_triggered();

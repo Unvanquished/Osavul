@@ -562,6 +562,14 @@ void MainWindow::on_syncButton_clicked()
     QTimer::singleShot(2000, this, SLOT(enableSyncButton()));
 }
 
+void MainWindow::on_statsButton_clicked()
+{
+    QString url = ui->statsButton->toolTip();
+
+    if (url != nullptr)
+        QDesktopServices::openUrl(QUrl(url));
+}
+
 void MainWindow::on_serverTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *)
 {
     if (!current)
@@ -570,6 +578,10 @@ void MainWindow::on_serverTable_currentItemChanged(QTableWidgetItem *current, QT
     auto sv = current->data(Qt::UserRole).value<unv::GameServer *>();
     ui->serverName->setText(sv->name());
     ui->serverHost->setText(sv->formattedAddress());
+
+    QString stats = sv->statsURL();
+    ui->statsButton->setEnabled(stats != nullptr);
+    ui->statsButton->setToolTip(stats);
 
     updateTeamTables(sv->players(), sv->lastUpdateTime());
 }

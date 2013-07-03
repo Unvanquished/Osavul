@@ -207,6 +207,7 @@ void GameServer::processOOB(QList<QByteArray> st)
     if (Q_LIKELY(responseType == FFFF "statusResponse")) {
         info.name = kvs.value("sv_hostname", "unknown");
         info.mapname = kvs.value("mapname", "unknown");
+        info.statsURL = kvs.value("sv_statsURL", nullptr);
         info.maxclients = kvs.value("sv_maxclients", 0).toInt();
         info.pure = kvs.value("pure", "1").toInt() != 0;
         info.game = kvs.value("gamename", "base");

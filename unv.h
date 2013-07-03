@@ -104,6 +104,7 @@ namespace unv {
         QString game() const { return info.game; }
         QString map() const  { return info.mapname; }
         QString name() const { return info.name; }
+        QString statsURL() const { return info.statsURL; }
 
         const QList<Player> &players() const { return m_players; }
         const QDateTime &lastUpdateTime() const { return m_lastUpdateTime; }
@@ -123,6 +124,7 @@ namespace unv {
             QString game;
             QString mapname;
             QString name;
+            QString statsURL;
             quint8 clients;
             quint8 maxclients;
             bool pure;
