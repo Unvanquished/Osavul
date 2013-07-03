@@ -266,6 +266,7 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="enabled"><bool>false</bool></property>
                 <property name="text">
                  <string>&amp;Join Current</string>
                 </property>
@@ -279,6 +280,7 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="enabled"><bool>false</bool></property>
                 <property name="text">
                  <string>&amp;Sync Current</string>
                 </property>
@@ -292,6 +294,7 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="enabled"><bool>false</bool></property>
                 <property name="text">
                  <string>&amp;Stats</string>
                 </property>

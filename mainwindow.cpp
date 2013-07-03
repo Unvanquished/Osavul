@@ -579,6 +579,9 @@ void MainWindow::on_serverTable_currentItemChanged(QTableWidgetItem *current, QT
     ui->serverName->setText(sv->name());
     ui->serverHost->setText(sv->formattedAddress());
 
+    ui->joinButton->setEnabled(true);
+    ui->syncButton->setEnabled(true);
+
     QString stats = sv->statsURL();
     ui->statsButton->setEnabled(stats != nullptr);
     ui->statsButton->setToolTip(stats);
