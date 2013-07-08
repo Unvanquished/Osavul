@@ -251,7 +251,13 @@ QString GameServer::formattedClientCount(const QString &fmt) const
 
 QString GameServer::formattedAddress(const QString &fmt) const
 {
-    return fmt.arg(sock.peerName()).arg(sock.peerPort());
+    QString host = sock.peerName();
+
+    // wrap IPv6 address in [] if not already done
+    if (host.indexOf(':') >= 0 && host[0] != '[')
+        host = '[' + host + ']';
+
+    return fmt.arg(host).arg(sock.peerPort());
 }
 
 void MasterServer::processOOB(QByteArray oob) {
