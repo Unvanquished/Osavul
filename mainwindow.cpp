@@ -391,18 +391,20 @@ void MainWindow::on_masterServer_serverQueried(unv::GameServer *sv)
     for (int i = 0; i < 6; ++i)
         items << (isNew ? new QTableWidgetItem : ui->serverTable->item(k, i));
 
+    bool ipv4 = sv->ipv4();
     bool ipv6 = sv->ipv6();
+    bool linked = ipv4 & ipv6;
 
     items.at(0)->setText(sv->game());
     items.at(1)->setText(sv->name());
-    items.at(2)->setText(ipv6 ? "v6" : "v4");
+    items.at(2)->setText(linked ? "v4/v6" : ipv6 ? "v6" : "v4");
     items.at(3)->setText(sv->map());
     items.at(4)->setData(Qt::EditRole, sv->ping());
     items.at(5)->setText(sv->formattedClientCount());
 
     QFont udp_font = items.at(2)->font();
     udp_font.setBold(ipv6);
-    udp_font.setItalic(ipv6);
+    udp_font.setItalic(linked);
     items.at(2)->setFont(udp_font);
 
     if (isNew) {
@@ -576,8 +578,15 @@ void MainWindow::on_serverTable_currentItemChanged(QTableWidgetItem *current, QT
         return;
 
     auto sv = current->data(Qt::UserRole).value<unv::GameServer *>();
+    bool ipv4 = sv->ipv4();
+    bool ipv6 = sv->ipv6();
+    bool linked = ipv4 & ipv6;
+
     ui->serverName->setText(sv->name());
-    ui->serverHost->setText(sv->formattedAddress());
+    if (linked)
+        ui->serverHost->setText(sv->formattedAddress(0) + "<br />" + sv->formattedAddress(1));
+    else
+        ui->serverHost->setText(sv->formattedAddress());
 
     ui->joinButton->setEnabled(true);
     ui->syncButton->setEnabled(true);

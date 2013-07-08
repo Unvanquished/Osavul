@@ -36,25 +36,32 @@ namespace unv {
         Server(const QHostAddress &host, quint16 port, const QByteArray &queryMessage);
         Server(const QString &host, quint16 port, const QByteArray &queryMessage);
 
-        QString host() const { return sock.peerName(); }
-        quint16 port() const { return sock.peerPort(); }
-        quint16 ping() const { return m_ping; }
-        bool    ipv6() const { return m_ipv6; }
+        void addAddress(const QHostAddress &host, quint16 port);
+
+        QString host(int index = 0) const { return validIndex(index) ? sock[index].sock.peerName() : ""; }
+        quint16 port(int index = 0) const { return validIndex(index) ? sock[index].sock.peerPort() : 0; }
+        quint16 ping(int index = 0) const { return validIndex(index) ? sock[index].ping : 0; }
+        bool    ipv4() const;
+        bool    ipv6() const;
+        bool    has(const QHostAddress &host, quint16 port) const;
 
         const QString &infoString() const { return m_infoString; }
 
     protected:
         ~Server();
-        QUdpSocket sock;
         virtual void processOOB(QByteArray st) = 0;
         const QByteArray m_queryMessage;
 
-        QElapsedTimer pingTimer;
-        int m_ping;
+        struct {
+            QUdpSocket sock;
+            QElapsedTimer pingTimer;
+            int ping;
+        } sock[2];
+
+        bool validIndex(int index) const { return index >= 0 && index < 2; }
 
     private:
         QString m_infoString;
-        bool m_ipv6;
 
     public slots:
         void query();
@@ -112,7 +119,7 @@ namespace unv {
 
         int botCount() const;
 
-        QString formattedAddress(const QString &fmt = "%1:%2") const;
+        QString formattedAddress(int which = 0, const QString &fmt = "%1:%2") const;
         QString formattedClientCount(const QString &fmt = "[%1/%2]") const;
 
     private:
@@ -139,13 +146,43 @@ namespace unv {
         void ready();
     };
 
+    class LinkedAddressPair : public QObject
+    {
+        Q_OBJECT
+
+    public:
+        LinkedAddressPair(const QHostAddress &ip4, quint16 portno4, const QHostAddress &ip6, quint16 portno6)
+            : ipv4(ip4), ipv6(ip6), port4(portno4), port6(portno6)
+        { }
+        ~LinkedAddressPair() { }
+
+        bool contains(const QHostAddress &ip, quint16 port) const
+        {
+            return (ipv4 == ip && port4 == port ) || (ipv6 == ip && port6 == port);
+        }
+
+        const QHostAddress &getOtherAddress(const QHostAddress &ip) const
+        {
+            return ipv4 == ip ? ipv6 : ipv4;
+        }
+
+        quint16 getOtherPort(const QHostAddress &ip) const
+        {
+            return ipv4 == ip ? port6 : port4;
+        }
+
+    private:
+        QHostAddress ipv4, ipv6;
+        quint16 port4, port6;
+    };
+
     class MasterServer : public Server
     {
         Q_OBJECT
 
     public:
         MasterServer(const QString &host, quint16 port, quint16 protocol)
-            : Server(host, port, FFFF "getserversExt UNVANQUISHED " % QByteArray::number(protocol) % " full empty")
+            : Server(host, port, FFFF "getserversExt UNVANQUISHED " % QByteArray::number(protocol) % " dual full empty")
         { }
         ~MasterServer() { }
 
@@ -154,7 +191,9 @@ namespace unv {
     private:
         Q_DISABLE_COPY(MasterServer)
         QList<GameServer *> gameServers;
+        QList<LinkedAddressPair *> linkedAddressPairs;
         void processOOB(QByteArray st);
+        QList<GameServer *> *parseServersOOB(const QByteArray &oob, int index, int length, bool extended);
 
     signals:
         void serverQueried(unv::GameServer *sv);

@@ -106,56 +106,93 @@ void htmlColorize(QString &s)
 Server::Server(const QHostAddress &host, quint16 port, const QByteArray &queryMessage = "")
     : m_queryMessage(queryMessage)
 {
-    connect(&sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
-    sock.connectToHost(host, port);
+    connect(&sock[0].sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
+    sock[0].sock.connectToHost(host, port);
 
-    m_ipv6 = host.protocol() == QAbstractSocket::IPv6Protocol;
-
-    if (!sock.waitForConnected())
+    if (!sock[0].sock.waitForConnected())
         return;
 }
 
 Server::Server(const QString &host, quint16 port, const QByteArray &queryMessage = "")
     : m_queryMessage(queryMessage)
 {
-    connect(&sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
-    sock.connectToHost(host, port);
+    connect(&sock[0].sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
+    sock[0].sock.connectToHost(host, port);
 
-    m_ipv6 = sock.peerAddress().protocol() == QAbstractSocket::IPv6Protocol;
+    if (!sock[0].sock.waitForConnected())
+        return;
+}
 
-    if (!sock.waitForConnected())
+void Server::addAddress(const QHostAddress &host, quint16 port)
+{
+    sock[1].sock.close();
+
+    connect(&sock[1].sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
+    sock[1].sock.connectToHost(host, port);
+
+    if (!sock[1].sock.waitForConnected())
         return;
 }
 
 void Server::receiveData()
 {
-    if (m_ping == 0 && pingTimer.isValid()) {
-        m_ping = pingTimer.elapsed();
-        pingTimer.invalidate();
-    }
+    // we should only be sending to one of them
+    for (int i = 0; i < 2; ++i)
+    {
+        if (sock[i].sock.state() < QAbstractSocket::ConnectedState)
+            continue;
 
-    // 1400 is the maximum #bytes per packet, defined by masterserver code.
-    // replies of the more popular servers of Tremulous are still much smaller.
-    // stay on alert if it ever changes, though.
+        if (sock[i].ping == 0 && sock[i].pingTimer.isValid()) {
+            sock[i].ping = sock[i].pingTimer.elapsed();
+            sock[i].pingTimer.invalidate();
+        }
 
-    while (sock.hasPendingDatagrams()) {
-        QByteArray tmp = sock.read(1400);
-        m_infoString = QString(tmp);
-        processOOB(tmp);
+        // 1400 is the maximum #bytes per packet, defined by masterserver code.
+        // replies of the more popular servers of Tremulous are still much smaller.
+        // stay on alert if it ever changes, though.
+
+        while (sock[i].sock.hasPendingDatagrams()) {
+            QByteArray tmp = sock[i].sock.read(1400);
+            m_infoString = QString(tmp);
+            processOOB(tmp);
+        }
     }
 }
 
 void Server::query()
 {
-    sock.write(m_queryMessage);
+    // for now, sock[0] only
+    sock[0].sock.write(m_queryMessage);
 
-    m_ping = 0;
-    pingTimer.start();
+    sock[0].ping = 0;
+    sock[0].pingTimer.start();
+}
+
+bool Server::ipv4() const
+{
+    if (sock[0].sock.peerAddress().protocol() == QAbstractSocket::IPv4Protocol) return true;
+    if (sock[1].sock.peerAddress().protocol() == QAbstractSocket::IPv4Protocol) return true;
+    return false;
+}
+
+bool Server::ipv6() const
+{
+    if (sock[0].sock.peerAddress().protocol() == QAbstractSocket::IPv6Protocol) return true;
+    if (sock[1].sock.peerAddress().protocol() == QAbstractSocket::IPv6Protocol) return true;
+    return false;
+}
+
+bool Server::has(const QHostAddress &host, quint16 port) const
+{
+    if (sock[0].sock.peerAddress() == host && sock[0].sock.peerPort() == port) return true;
+    if (sock[1].sock.peerAddress() == host && sock[1].sock.peerPort() == port) return true;
+    return false;
 }
 
 Server::~Server()
 {
-    sock.close();
+    sock[0].sock.close();
+    sock[1].sock.close();
 }
 
 Player GameServer::constructPlayer(Player::Team t, const QByteArray &entry, bool isBot)
@@ -249,15 +286,17 @@ QString GameServer::formattedClientCount(const QString &fmt) const
     return fmt.arg(m_players.length()).arg(info.maxclients);
 }
 
-QString GameServer::formattedAddress(const QString &fmt) const
+QString GameServer::formattedAddress(int which, const QString &fmt) const
 {
-    QString host = sock.peerName();
+    if (!validIndex(which)) return fmt.arg("").arg(0);
+
+    QString host = sock[which].sock.peerName();
 
     // wrap IPv6 address in [] if not already done
     if (host.indexOf(':') >= 0 && host[0] != '[')
         host = '[' + host + ']';
 
-    return fmt.arg(host).arg(sock.peerPort());
+    return fmt.arg(host).arg(sock[which].sock.peerPort());
 }
 
 void MasterServer::processOOB(QByteArray oob) {
@@ -265,6 +304,36 @@ void MasterServer::processOOB(QByteArray oob) {
     bool extended = false;
     const int length = oob.length();
 
+    if (length > 32 && oob.mid(0, 30) == FFFF "getserversExtResponseLinks\0" && oob.at(30) == 0)
+    {
+        linkedAddressPairs.clear();
+        index = 31;
+
+        while (index < length)
+        {
+            quint32 ipv4 = 0;
+            quint8  ipv6[16] = {};
+            quint16 portv4, portv6;
+
+            if (index + 24 > length)
+                return;
+
+            ipv4 = 0;
+            for (int j = 0; j < 4; ++j)
+                ipv4 |= static_cast<quint8>(oob.at(index++)) << (24 - j * 8);
+            portv4 = (oob.at(index) << 8) + oob.at(index + 1);
+            index += 2;
+
+            memcpy(ipv6, oob.data() + index, 16);
+            portv6 = (oob.at(index + 16) << 8) + oob.at(index + 17);
+            index += 18;
+
+            LinkedAddressPair *ap = new LinkedAddressPair(QHostAddress(ipv4), portv4, QHostAddress(ipv6), portv6);
+            linkedAddressPairs << ap;
+        }
+
+        return;
+    }
     if (length > 22 && oob.mid(0, 22) == FFFF "getserversResponse" && oob.at(22) == 0)
     {
         index = 23;
@@ -288,6 +357,20 @@ void MasterServer::processOOB(QByteArray oob) {
         ++index;
     }
 
+    QList<GameServer *> *newServers = parseServersOOB(oob, index, length, extended);
+
+    for (auto sv : *newServers)
+    {
+        sv->query();
+    }
+
+    delete newServers;
+}
+
+QList<GameServer *> *MasterServer::parseServersOOB(const QByteArray &oob, int index, int length, bool extended)
+{
+    auto newServers = new QList<GameServer *>();
+
     while (index < length)
     {
         union {
@@ -301,7 +384,7 @@ void MasterServer::processOOB(QByteArray oob) {
         {
             case '\\':
                 if (index + 6 > length)
-                    return;
+                    return newServers;
                 ip.v4 = 0;
 
                 for (int j = 0; j < 4; ++j)
@@ -311,9 +394,9 @@ void MasterServer::processOOB(QByteArray oob) {
 
             case '/':
                 if (!extended)
-                    return; // rest is invalid unless response is extended-mode
+                    return newServers; // rest is invalid unless response is extended-mode
                 if (index + 18 > length)
-                    return;
+                    return newServers;
 
                 memcpy(ip.v6, oob.data() + index, 16);
                 index += 16;
@@ -321,20 +404,47 @@ void MasterServer::processOOB(QByteArray oob) {
                 break;
 
             default: // invalid
-                return;
+                return newServers;
         }
-
 
         port = (oob.at(index) << 8) + oob.at(index + 1);
         index += 2;
 
-        GameServer *sv = isv6
-                       ? new GameServer(QHostAddress(ip.v6), port)
-                       : new GameServer(QHostAddress(ip.v4), port);
-        gameServers << sv;
-        connect(sv, SIGNAL(ready()), this, SLOT(onGameSvReady()));
-        sv->query();
+        QHostAddress addr = isv6 ? QHostAddress(ip.v6) : QHostAddress(ip.v4);
+
+        bool linked = false;
+
+        for (auto i : linkedAddressPairs)
+        {
+            if (i->contains(addr, port))
+            {
+                const QHostAddress &linkaddr = i->getOtherAddress(addr);
+                const quint16 linkport = i->getOtherPort(addr);
+
+                for (auto j : gameServers)
+                {
+                    if (j->has(linkaddr, linkport))
+                    {
+                        j->addAddress(addr, port);
+                        linked = true;
+                        break;
+                    }
+                }
+
+                if (linked) break;
+            }
+        }
+
+        if (!linked)
+        {
+            GameServer *sv = new GameServer(addr, port);
+            gameServers << sv;
+            *newServers << sv;
+            connect(sv, SIGNAL(ready()), this, SLOT(onGameSvReady()));
+        }
     }
+
+    return newServers;
 }
 
 void MasterServer::onGameSvReady() {
