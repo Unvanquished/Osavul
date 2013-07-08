@@ -531,7 +531,7 @@ void MainWindow::on_joinButton_clicked()
 
     auto sv = ui->serverTable->currentItem()->data(Qt::UserRole).value<unv::GameServer *>();
 
-    this->connectTo(sv->formattedAddress());
+    this->connectTo(sv->formattedAddress(true));
 }
 
 void MainWindow::connectTo(const QString &host)

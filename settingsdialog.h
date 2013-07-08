@@ -4,6 +4,7 @@
 #include <QtGui/QDialog>
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
+#include "utils.h"
 
 namespace Ui {
     class SettingsDialog;
@@ -22,6 +23,8 @@ private slots:
     void on_daemonPathBrowseButton_clicked();
 
 private:
+    Settings::PreferredIPVersion getPreferredIPSetting();
+
     Ui::SettingsDialog *ui;
     QSettings settings;
 };

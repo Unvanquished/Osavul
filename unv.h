@@ -22,6 +22,7 @@
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QStringBuilder>
 #include <QtCore/QDateTime>
+#include <QtCore/QSettings>
 #include <QtGui/QColor>
 #include <QtGui/QTextDocument> // for Qt::escape()
 
@@ -59,6 +60,8 @@ namespace unv {
         } sock[2];
 
         bool validIndex(int index) const { return index >= 0 && index < 2; }
+
+        const QSettings settings;
 
     private:
         QString m_infoString;
@@ -119,6 +122,7 @@ namespace unv {
 
         int botCount() const;
 
+        QString formattedAddress(bool usePreferred, const QString &fmt = "%1:%2") const;
         QString formattedAddress(int which = 0, const QString &fmt = "%1:%2") const;
         QString formattedClientCount(const QString &fmt = "[%1/%2]") const;
 

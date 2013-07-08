@@ -16,6 +16,7 @@
  */
 
 #include "unv.h"
+#include "utils.h"
 
 #define FFFF "\xff\xff\xff\xff"
 
@@ -159,13 +160,18 @@ void Server::receiveData()
     }
 }
 
+#include <iostream>
+using namespace std;
 void Server::query()
 {
-    // for now, sock[0] only
-    sock[0].sock.write(m_queryMessage);
+    Settings::PreferredIPVersion ip(settings.value("unv/preferredIPVersion").toInt());
 
-    sock[0].ping = 0;
-    sock[0].pingTimer.start();
+    int which = ip.isPreferredType(sock[1].sock);
+
+    sock[which].sock.write(m_queryMessage);
+
+    sock[which].ping = 0;
+    sock[which].pingTimer.start();
 }
 
 bool Server::ipv4() const
@@ -297,6 +303,16 @@ QString GameServer::formattedAddress(int which, const QString &fmt) const
         host = '[' + host + ']';
 
     return fmt.arg(host).arg(sock[which].sock.peerPort());
+}
+
+QString GameServer::formattedAddress(bool usePreferred, const QString &fmt) const
+{
+
+    int which = usePreferred
+              ? Settings::PreferredIPVersion(settings.value("unv/preferredIPVersion").toInt()).isPreferredType(sock[1].sock)
+              : 0;
+
+    return formattedAddress(which, fmt);
 }
 
 void MasterServer::processOOB(QByteArray oob) {
