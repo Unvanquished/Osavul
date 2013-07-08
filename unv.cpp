@@ -141,7 +141,7 @@ void Server::receiveData()
     while (sock.hasPendingDatagrams()) {
         QByteArray tmp = sock.read(1400);
         m_infoString = QString(tmp);
-        processOOB(tmp.split('\n'));
+        processOOB(tmp);
     }
 }
 
@@ -191,8 +191,9 @@ void GameServer::parsePB(const QByteArray &pString, const QByteArray &bString, c
     }
 }
 
-void GameServer::processOOB(QList<QByteArray> st)
+void GameServer::processOOB(QByteArray oob)
 {
+    QList<QByteArray> st = oob.split('\n');
     QByteArray responseType = st.takeFirst();
     QList<QByteArray> kvList = st.takeFirst().split('\\');
     kvList.removeAll(""); // only QString can split taking a SkipEmptyParts enum member
@@ -253,12 +254,7 @@ QString GameServer::formattedAddress(const QString &fmt) const
     return fmt.arg(sock.peerName()).arg(sock.peerPort());
 }
 
-void MasterServer::processOOB(QList<QByteArray> st) {
-    if (st.length() != 1)
-        Q_ASSERT(false);
-
-    QByteArray oob = st.takeFirst();
-
+void MasterServer::processOOB(QByteArray oob) {
     int index;
     bool extended = false;
     const int length = oob.length();

@@ -46,7 +46,7 @@ namespace unv {
     protected:
         ~Server();
         QUdpSocket sock;
-        virtual void processOOB(QList<QByteArray> st) = 0;
+        virtual void processOOB(QByteArray st) = 0;
         const QByteArray m_queryMessage;
 
         QElapsedTimer pingTimer;
@@ -133,7 +133,7 @@ namespace unv {
         QList<Player> m_players;
         QDateTime m_lastUpdateTime;
 
-        void processOOB(QList<QByteArray> st);
+        void processOOB(QByteArray st);
 
     signals:
         void ready();
@@ -154,7 +154,7 @@ namespace unv {
     private:
         Q_DISABLE_COPY(MasterServer)
         QList<GameServer *> gameServers;
-        void processOOB(QList<QByteArray> st);
+        void processOOB(QByteArray st);
 
     signals:
         void serverQueried(unv::GameServer *sv);
