@@ -15,6 +15,8 @@
 * along with Osavul.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <functional>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
